@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import DisplayActivities from './component/displayActivities';
 import ActivityTracker from './component/activityTracker';
 class Login extends Component {
-    toggle = false;
     state = {
         uname: null,
         password: null,
@@ -19,11 +18,19 @@ class Login extends Component {
         });
     }
     handleClick = (e) => {
-        this.toggle = !this.toggle;
+        if (this.state.uname === null) {
+            alert("enter valid user name");
+            return;
+        }
+        else 
         this.setState({
-            click: !this.state.click
-        });
-    }
+                click: !this.state.click
+            });
+            
+            }
+        
+
+    
     render() {
         const styles = {
             center: {

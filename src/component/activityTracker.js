@@ -19,9 +19,9 @@ export default class ActivityTracker extends Component {
                 }]
             }],
             title: null,
-            startDate: new Date(),
+            startDate: null,
             startTime: null,
-            endTime: null,
+            endTime: '23:59:59',
             toggle: false
         }
     }
@@ -43,11 +43,25 @@ export default class ActivityTracker extends Component {
     }
 
     handleEndTime = (e) => {
-        this.setState({ endTime: e.target.value });
+        if (this.state.startTime <= e.target.value)
+            this.setState({ endTime: e.target.value });
+        else {
+            alert("enter valid end time");
+
+        }
     }
 
     handleFormSubmit = (e) => {
         e.preventDefault();
+
+        if (this.state.startTime > this.state.endTime) {
+            alert("Please enter valid end time");
+            return;
+        }
+        else if(this.state.title===null){
+            alert("Please enter title");
+            return;
+        }
         this.setState({ toggle: true });
         let index = 0;
         let items = JSON.parse(localStorage.getItem(this.props.username));
@@ -101,7 +115,7 @@ export default class ActivityTracker extends Component {
                     duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
                     title: this.state.title
                 }]
-            }
+            }   
             localStorage.setItem(this.props.username, JSON.stringify(obj));
         }
     }
@@ -131,10 +145,10 @@ export default class ActivityTracker extends Component {
                 End Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleEndTime} format={'HH:mm'} /><br /><br />
                     <button onClick={this.handleFormSubmit} >Submit</button><br /><br />
                     {this.state.toggle ? (<table className="table" boder='1'>
-                        <tr>
-                            <th>Title</th>
-                            <th>Duration</th>
-                            <th>Date</th>
+                        <tr boder='1'>
+                            <th boder='1'>Title</th>
+                            <th boder='1'>Duration</th>
+                            <th boder='1'>Date</th>
                         </tr>
                         <tr className='row'>
                             {report.tasks.map((el, key) => {

@@ -4,7 +4,6 @@ export default class DisplayActivities extends Component {
         
         return (
             <div>
-                <br></br>
                 <td>{this.props.title}</td>
                 {/* &nsbp; */}
                 <td>{this.props.duration}</td>
