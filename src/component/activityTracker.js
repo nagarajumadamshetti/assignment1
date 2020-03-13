@@ -80,7 +80,6 @@ export default class ActivityTracker extends Component {
                     index = i;
                     console.log("found")
                     break;
-
                 }
                 else {
                     flag = 0;
@@ -145,7 +144,7 @@ export default class ActivityTracker extends Component {
                 End Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleEndTime} format={'HH:mm'} /><br /><br />
                     <button onClick={this.handleFormSubmit} >Submit</button><br /><br />
                     {this.state.toggle ? (<table className="table" boder='1'>
-                        <tr boder='1'>
+                        <tr boder='1' className='row'>
                             <th boder='1'>Title</th>
                             <th boder='1'>Duration</th>
                             <th boder='1'>Date</th>
@@ -161,7 +160,6 @@ export default class ActivityTracker extends Component {
                             })}
                         </tr>
                     </table>) : null}
-
                 </form>
             </div>
         )
