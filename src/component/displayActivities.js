@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 export default class DisplayActivities extends Component {
     render() {
+        
         return (
             <div>
                 <br></br>

@@ -19,10 +19,10 @@ export default class ActivityTracker extends Component {
                 }]
             }],
             title: null,
-            startDate: null,
+            startDate: new Date(),
             startTime: null,
             endTime: null,
-            data: null
+            toggle: false
         }
     }
 
@@ -33,9 +33,9 @@ export default class ActivityTracker extends Component {
     };
 
 
-    handleStartDate  = date => {
+    handleStartDate = date => {
         this.setState({
-          startDate: date
+            startDate: date
         });
     }
     handleStartTime = (e) => {
@@ -47,7 +47,8 @@ export default class ActivityTracker extends Component {
     }
 
     handleFormSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        this.setState({ toggle: !this.state.toggle });
         let index = 0;
         let items = JSON.parse(localStorage.getItem(this.props.username));
         let flag = 0;
@@ -65,7 +66,7 @@ export default class ActivityTracker extends Component {
                     index = i;
                     console.log("found")
                     break;
-              
+
                 }
                 else {
                     flag = 0;
@@ -82,7 +83,7 @@ export default class ActivityTracker extends Component {
             let newItem = items;
             const tasks = {
                 date: moment(this.state.startDate).format('L'),
-                duration: moment.utc(moment(this.state.endTime,"DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
+                duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
                 title: this.state.title
             }
             newItem.tasks.push(tasks);
@@ -96,8 +97,8 @@ export default class ActivityTracker extends Component {
                 username: this.props.username,
                 password: this.props.password,
                 tasks: [{
-                    date:moment(this.state.startDate).format('L'),
-                    duration:  moment.utc(moment(this.state.endTime,"DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
+                    date: moment(this.state.startDate).format('L'),
+                    duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
                     title: this.state.title
                 }]
             }
@@ -110,23 +111,44 @@ export default class ActivityTracker extends Component {
         // report.map((el,key))
         return (
             <div >
-                <form >
-                    <br>
-                    </br>
+                <style>{`
+                          table{
+                                border:1px solid black;
+                            }
+                            .content {
+                                max-width: 500px;
+                                margin: auto;
+                              }
+                              .row {
+                                border:1px solid black; 
+                            }
+                        `}</style>
+                <form className="content">
                     <h1> Enter Activities</h1>
                     <input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} />
-                    Start Date:<DatePicker  selected={this.state.startDate} onSelect={this.handleStartDate} ></DatePicker><br /><br />
+                    Start Date:<DatePicker selected={this.state.startDate} onSelect={this.handleStartDate} ></DatePicker><br /><br />
                   Start Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleStartTime} format={'HH:mm'} /><br /><br />
                 End Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleEndTime} format={'HH:mm'} /><br /><br />
                     <button onClick={this.handleFormSubmit} >Submit</button><br /><br />
-                    <tr>
-                        {report.tasks.map((el, key) => {
-                            let a = moment(el.date);
-                            let b = moment(new Date());
-                            if (a.diff(b) <= 7)
-                                return <DisplayActivities key={key} title={el.title}      duration={el.duration}  date={el.date}></DisplayActivities>  
-                        })}
-                    </tr>
+                    {this.state.toggle ? (<table boder='1'>
+                        <tr>
+                            <th>Title</th>
+                            <th>Duration</th>
+                            <th>Date</th>
+
+                        </tr>
+
+                        <tr className='row'>
+                            {report.tasks.map((el, key) => {
+                                let a = moment(el.date);
+                                let b = moment(new Date());
+                                if (a.diff(b) <= 7)
+                                    return <DisplayActivities key={key} title={el.title} duration={el.duration} date={el.date}></DisplayActivities>
+                                else
+                                    return null;
+                            })}
+                        </tr>
+                    </table>) : null}
 
                 </form>
             </div>

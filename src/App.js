@@ -32,9 +32,11 @@ class App extends Component {
     console.log('login' + this.event.newUserId);
   }
   render() {
+    
     return (
-      
       <Login></Login>
+     
+
     );
   }
 }
