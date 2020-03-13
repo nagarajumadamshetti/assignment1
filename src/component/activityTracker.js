@@ -112,7 +112,7 @@ export default class ActivityTracker extends Component {
         return (
             <div >
                 <style>{`
-                          table{
+                          .table{
                                 border:1px solid black;
                             }
                             .content {
@@ -130,7 +130,7 @@ export default class ActivityTracker extends Component {
                   Start Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleStartTime} format={'HH:mm'} /><br /><br />
                 End Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleEndTime} format={'HH:mm'} /><br /><br />
                     <button onClick={this.handleFormSubmit} >Submit</button><br /><br />
-                    {this.state.toggle ? (<table boder='1'>
+                    {this.state.toggle ? (<table className="table" boder='1'>
                         <tr>
                             <th>Title</th>
                             <th>Duration</th>
