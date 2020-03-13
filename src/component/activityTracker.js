@@ -151,9 +151,9 @@ export default class ActivityTracker extends Component {
                         </tr>
                         <tr className='row'>
                             {report.tasks.map((el, key) => {
-                                let a = moment(el.date);
-                                let b = moment(new Date());
-                                if (a.diff(b) <= 7)
+                                let b = moment(el.date);
+                                let a = moment(new Date())
+                                if (a.diff(b,'days') <= 7)
                                     return <DisplayActivities key={key} title={el.title} duration={el.duration} date={el.date}></DisplayActivities>
                                 else
                                     return null;
