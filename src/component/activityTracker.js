@@ -65,7 +65,7 @@ export default class ActivityTracker extends Component {
                     index = i;
                     console.log("found")
                     break;
-                    console.log("break");
+              
                 }
                 else {
                     flag = 0;
@@ -81,8 +81,8 @@ export default class ActivityTracker extends Component {
             console.log("adfasdf");
             let newItem = items;
             const tasks = {
-                date: this.state.startDate,
-                duration: this.state.endTime - this.state.startTime,
+                date: moment(this.state.startDate).format('L'),
+                duration: moment.utc(moment(this.state.endTime,"DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
                 title: this.state.title
             }
             newItem.tasks.push(tasks);
@@ -96,8 +96,8 @@ export default class ActivityTracker extends Component {
                 username: this.props.username,
                 password: this.props.password,
                 tasks: [{
-                    date: this.state.startDate,
-                    duration: this.state.endTime - this.state.startTime,
+                    date:moment(this.state.startDate).format('L'),
+                    duration:  moment.utc(moment(this.state.endTime,"DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
                     title: this.state.title
                 }]
             }
@@ -115,16 +115,16 @@ export default class ActivityTracker extends Component {
                     </br>
                     <h1> Enter Activities</h1>
                     <input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} />
-                    Start Date:<DatePicker dateFormat='yyyy-mm-dd' selected={this.state.startDate} onSelect={this.handleStartDate} ></DatePicker><br /><br />
-                  Start Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleStartTime} /><br /><br />
-                End Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleEndTime} /><br /><br />
+                    Start Date:<DatePicker  selected={this.state.startDate} onSelect={this.handleStartDate} ></DatePicker><br /><br />
+                  Start Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleStartTime} format={'HH:mm'} /><br /><br />
+                End Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleEndTime} format={'HH:mm'} /><br /><br />
                     <button onClick={this.handleFormSubmit} >Submit</button><br /><br />
                     <tr>
                         {report.tasks.map((el, key) => {
                             let a = moment(el.date);
                             let b = moment(new Date());
                             if (a.diff(b) <= 7)
-                                return <tr><td key={key}>> {el.title}      {el.duration}     {el.date}</td></tr>
+                                return <DisplayActivities key={key} title={el.title}      duration={el.duration}  date={el.date}></DisplayActivities>  
                         })}
                     </tr>
 

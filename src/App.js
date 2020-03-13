@@ -12,40 +12,29 @@ import {
 } from "react-router-dom";
 
 class App extends Component {
+  toggle = false;
   constructor(props) {
     super(props);
     this.state = {
-      users: [
-        { username: null, password: null }
-      ]
+      username: null,
+       password: null
     }
+
   }
-  handleNewUser(e)
-  {
+  handleNewUser(e) {
     e.preventDefault();
-    
+
   }
   handleLogin(event) {
     event.preventDefault();
-    console.log('login'+this.event.newUserId);
+    this.toggle = !this.toggle;
+    this.setState({ username:this.state.username})
+    console.log('login' + this.event.newUserId);
   }
   render() {
     return (
-      <Router>
-        <div>
-          <div>
-            <Link to="/login">login</Link>
-          </div>
-          <br></br>
-          <Switch>
-            <Route path="/login">
-              <br></br>
-              <br></br>
-              <Login submitLogin={this.handleLogin} newUserId={this.handleNewUser} newPassword={this.handlePassword}/>
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+      
+      <Login></Login>
     );
   }
 }
