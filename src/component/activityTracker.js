@@ -48,7 +48,7 @@ export default class ActivityTracker extends Component {
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        this.setState({ toggle: !this.state.toggle });
+        this.setState({ toggle: true });
         let index = 0;
         let items = JSON.parse(localStorage.getItem(this.props.username));
         let flag = 0;
@@ -135,9 +135,7 @@ export default class ActivityTracker extends Component {
                             <th>Title</th>
                             <th>Duration</th>
                             <th>Date</th>
-
                         </tr>
-
                         <tr className='row'>
                             {report.tasks.map((el, key) => {
                                 let a = moment(el.date);
