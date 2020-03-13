@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import DisplayActivities from './component/displayActivities';
 import ActivityTracker from './component/activityTracker';
 class Login extends Component {
     constructor(props) {
@@ -21,7 +20,7 @@ class Login extends Component {
             password: e.target.value
         });
     }
-    handleClick = (e) => {
+    handleClickLogin = (e) => {
         console.log(this.state.uname);
         if (this.state.uname === null || this.state.uname === "") {
             alert("enter valid user name");
@@ -33,19 +32,12 @@ class Login extends Component {
 
     }
     handleClickLogout = (e) => {
-        if (this.state.uname === null || this.state.uname === "") {
-            alert("enter valid user name");
-            return;
-        }
         this.setState({
             uname: null,
             password: null,
-            click:!this.state.click
+            click: !this.state.click
         });
-        
     }
-
-
 
     render() {
         const styles = {
@@ -65,7 +57,7 @@ class Login extends Component {
                     (<div>
                         <input type="text" placeholder="username" onChange={this.handleUserId} />
                         <input type="password" placeholder="Password" onChange={this.handlePassword} />
-                        <button onClick={this.handleClick}>Login</button>
+                        <button onClick={this.handleClickLogin}>Login</button>
                     </div>)}
             </div>
         );
