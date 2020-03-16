@@ -161,6 +161,7 @@ export default class ActivityTracker extends Component {
                             {
                                 Object.keys(hm).map((date, index) => {
                                     return (<div>
+                                        <br></br>
                                         {date}
                                         {hm[date].map((el, key) => {
                                             let b = moment(el.date);
