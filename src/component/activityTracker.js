@@ -19,9 +19,9 @@ export default class ActivityTracker extends Component {
                 }]
             }],
             title: null,
-            startDate: null,
-            startTime: null,
-            endTime: '23:59:59',
+            startDate: new Date(),
+            startTime: new Date(),
+            endTime:  moment().endOf("day"),
             toggle: false
         }
     }
@@ -47,7 +47,6 @@ export default class ActivityTracker extends Component {
             this.setState({ endTime: e.target.value });
         else {
             alert("enter valid end time");
-
         }
     }
 
@@ -102,7 +101,6 @@ export default class ActivityTracker extends Component {
             newItem.tasks.push(tasks);
             this.setState({ users: newItem });
             localStorage.setItem(this.props.username, JSON.stringify(newItem));
-            // this.setState({ data: JSON.parse(localStorage.getItem(this.props.username)) })
         }
         else {
             console.log(index);
@@ -121,6 +119,7 @@ export default class ActivityTracker extends Component {
     render() {
         const report = JSON.parse(localStorage.getItem(this.props.username));
         let hm = {};
+        if(report)
         report.tasks.map((el, key) => {
             if (hm[el.date] === undefined) {
                 hm[el.date] = [];
@@ -131,8 +130,6 @@ export default class ActivityTracker extends Component {
             }
         });
         console.log(hm);
-        // console.log(report[2])
-        // report.map((el,key))
         return (
             <div >
                 <style>{`
