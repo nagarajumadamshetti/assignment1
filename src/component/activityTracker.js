@@ -58,7 +58,7 @@ export default class ActivityTracker extends Component {
             alert("Please enter valid end time");
             return;
         }
-        else if(this.state.title===null){
+        else if (this.state.title === null) {
             alert("Please enter title");
             return;
         }
@@ -114,12 +114,23 @@ export default class ActivityTracker extends Component {
                     duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
                     title: this.state.title
                 }]
-            }   
+            }
             localStorage.setItem(this.props.username, JSON.stringify(obj));
         }
     }
     render() {
         const report = JSON.parse(localStorage.getItem(this.props.username));
+        let hm = {};
+        report.tasks.map((el, key) => {
+            if (hm[el.date] === undefined) {
+                hm[el.date] = [];
+                hm[el.date].push(el);
+            }
+            else {
+                hm[el.date].push(el);
+            }
+        });
+        console.log(hm);
         // console.log(report[2])
         // report.map((el,key))
         return (
@@ -144,20 +155,40 @@ export default class ActivityTracker extends Component {
                 End Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleEndTime} format={'HH:mm'} /><br /><br />
                     <button onClick={this.handleFormSubmit} >Submit</button><br /><br />
                     {this.state.toggle ? (<table className="table" boder='1'>
-                        <tr boder='1' className='row'>
+                        {/* <tr boder='1' className='row'>
                             <th boder='1'>Title</th>
                             <th boder='1'>Duration</th>
                             <th boder='1'>Date</th>
-                        </tr>
+                        </tr> */}
                         <tr className='row'>
-                            {report.tasks.map((el, key) => {
+                            {
+                                Object.keys(hm).map((date, index) => {
+                                    return (<div>
+                                        {date}
+                                        {hm[date].map((el, key) => {
+                                            let b = moment(el.date);
+                                            let a = moment(new Date())
+                                            if (a.diff(b, 'days') <= 7)
+                                            return (<tr>
+                                                <td>{el.title}</td>
+                                                <td>{el.duration}</td>
+                                            </tr>)
+                                        })
+                                        }
+                                    </div>
+
+                                    )
+                                })
+                            }
+
+                            {/* {report.tasks.map((el, key) => {
                                 let b = moment(el.date);
                                 let a = moment(new Date())
-                                if (a.diff(b,'days') <= 7)
+                                if (a.diff(b, 'days') <= 7)
                                     return <DisplayActivities key={key} title={el.title} duration={el.duration} date={el.date}></DisplayActivities>
                                 else
                                     return null;
-                            })}
+                            })} */}
                         </tr>
                     </table>) : null}
                 </form>
