@@ -49,7 +49,7 @@ export default class ActivityTracker extends Component {
             alert("enter valid end time");
         }
     }
-
+    
     handleFormSubmit = (e) => {
         e.preventDefault();
 
@@ -152,11 +152,11 @@ export default class ActivityTracker extends Component {
                 End Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleEndTime} format={'HH:mm'} /><br /><br />
                     <button onClick={this.handleFormSubmit} >Submit</button><br /><br />
                     {this.state.toggle ? (<table className="table" boder='1'>
-                        {/* <tr boder='1' className='row'>
+                        <tr boder='1' className='row'>
                             <th boder='1'>Title</th>
                             <th boder='1'>Duration</th>
-                            <th boder='1'>Date</th>
-                        </tr> */}
+                            {/* <th boder='1'>Date</th> */}
+                        </tr>
                         <tr className='row'>
                             {
                                 Object.keys(hm).map((date, index) => {
@@ -166,7 +166,7 @@ export default class ActivityTracker extends Component {
                                             let b = moment(el.date);
                                             let a = moment(new Date())
                                             if (a.diff(b, 'days') <= 7)
-                                            return (<tr>
+                                            return (<tr className='row'>
                                                 <td>{el.title}</td>
                                                 <td>{el.duration}</td>
                                             </tr>)

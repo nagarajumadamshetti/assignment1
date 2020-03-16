@@ -54,12 +54,15 @@ class Login extends Component {
                         <ActivityTracker username={this.state.uname} password={this.state.password} />
                     </div>)
                     :
-                    (<div>
+                    (<div> 
                         <input type="text" placeholder="username" onChange={this.handleUserId} />
                         <input type="password" placeholder="Password" onChange={this.handlePassword} />
                         <button onClick={this.handleClickLogin}>Login</button>
                     </div>)}
             </div>
+            // <div>
+            //     hello
+            // </div>
         );
     }
 }

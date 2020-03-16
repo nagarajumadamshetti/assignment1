@@ -3,6 +3,11 @@ import './App.css';
 import SignUp from './signUp';
 import Login from './login';
 import ActivityTracker from './component/activityTracker';
+import News from './component/news';
+import { Redirect } from 'react-router-dom';
+import Dashboard from './component/dashboard';
+import DashboardWrapper from './component/dashboardWraper';
+import NewsDescription from './component/newsDescription';
 
 import {
   BrowserRouter as Router,
@@ -17,7 +22,7 @@ class App extends Component {
     super(props);
     this.state = {
       username: null,
-       password: null
+      password: null
     }
 
   }
@@ -28,15 +33,24 @@ class App extends Component {
   handleLogin(event) {
     event.preventDefault();
     this.toggle = !this.toggle;
-    this.setState({ username:this.state.username})
+    this.setState({ username: this.state.username })
     console.log('login' + this.event.newUserId);
   }
-  render() {
-    
-    return (
-      <Login></Login>
-     
 
+  render() {
+    return (
+      <Router>
+        <div>
+          <h1>Assignment -1 </h1>
+          {/* <Link to='/dashboard'>Dashboard</Link> */}
+          <Route path='/' exact component={DashboardWrapper} />
+          <Route path='/dashboard' exact component={Dashboard} />
+          <Route path='/dashboard/login' exact component={Login} />
+          <Route path='/dashboard/login/activitytracker' exact component={ActivityTracker}/>
+          <Route path='/dashboard/news'exact component={News}/>
+          <Route path='/dashboard/news/description' exact component={NewsDescription}/>
+        </div>
+      </Router>
     );
   }
 }
