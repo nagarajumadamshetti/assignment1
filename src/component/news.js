@@ -20,6 +20,12 @@ class News extends Component {
 
     // let req = new Request(url);
     componentDidMount() {
+        this.props.history.push({
+            pathname: '/news',
+            state: {
+                from: this.props.location.pathname
+            }
+        })
         fetch(url)
             .then(response => response.json())
             .then(response => {
@@ -54,11 +60,6 @@ class News extends Component {
             <CardColumns>
                 {
                     articles.map((el, key) =>
-
-
-                        // return (
-                        // <div >
-                        //     <br></br>
                         <Card key={el.title} body inverse style={{ backgroundColor: '#333', borderColor: '#333' }} >
                             <CardBody>
                                 <CardTitle>

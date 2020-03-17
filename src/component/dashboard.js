@@ -4,6 +4,14 @@ import News from './news';
 import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
 
 export default class Dashboard extends Component {
+    componentDidMount() {
+        this.props.history.push({
+            pathname: '/dashboard',
+             state: { 
+                 from: this.props.location.pathname
+             }
+        })
+    }
     render() {
         return (<div>
             <Link to='/dashboard/login'>Login</Link>

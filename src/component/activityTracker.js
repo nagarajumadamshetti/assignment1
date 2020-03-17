@@ -51,7 +51,14 @@ export default class ActivityTracker extends Component {
             alert("enter valid end time");
         }
     }
-
+componentDidMount() {
+    this.props.history.push({
+        pathname: '/activityTracker',
+         state: { 
+             from: this.props.location.pathname
+         }
+    })
+}
     handleFormSubmit = (e) => {
         e.preventDefault();
 

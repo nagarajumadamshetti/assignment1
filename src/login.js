@@ -39,7 +39,14 @@ class Login extends Component {
             click: !this.state.click
         });
     }
-
+componentDidMount() {
+    this.props.history.push({
+        pathname: '/login',
+         state: { 
+             from: this.props.location.pathname
+         }
+    })
+}
     render() {
         const styles = {
             center: {
