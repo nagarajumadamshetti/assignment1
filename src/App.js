@@ -48,7 +48,7 @@ class App extends Component {
           <Route path='/dashboard/login' exact component={Login} />
           <Route path='/dashboard/login/activitytracker' exact component={ActivityTracker}/>
           <Route path='/dashboard/news'exact component={News}/>
-          <Route path='/dashboard/news/description' exact component={NewsDescription}/>
+          <Route path="/dashboard/news/:id"  render={(props) => <NewsDescription {...props} />} />
         </div>
       </Router>
     );
