@@ -27,26 +27,25 @@ class News extends Component {
                     articles: response.articles
                 })
             })
-            let arti=this.state.articles;
-            arti.map((el,key)=>{
-                Object.assign(el,{isOpen:false})
-            })
-            this.setState({articles:arti});
+        let arti = this.state.articles;
+        arti.map((el, key) => {
+            Object.assign(el, { isOpen: false })
+        })
+        this.setState({ articles: arti });
     }
     handleDisplayMore = (id) => {
-        console.log("source id"+id);
-        let arti=this.state.articles;
-        arti.map((el,key)=>{
-            if(el.title===id)
-            {
-                el.isOpen=!el.isOpen;
+        console.log("source id" + id);
+        let arti = this.state.articles;
+        arti.map((el, key) => {
+            if (el.title === id) {
+                el.isOpen = !el.isOpen;
             }
-            this.setState({articles:arti})
+            this.setState({ articles: arti })
             // this.setState({ isOpen: !this.state.isOpen })
         })
-            
-        
-        
+
+
+
     }
     render() {
         const { articles } = this.state;
@@ -54,23 +53,33 @@ class News extends Component {
         return (<div >
             <CardColumns>
                 {
-                    articles.map((el, key) => 
-                        
-                        
+                    articles.map((el, key) =>
+
+
                         // return (
                         // <div >
                         //     <br></br>
-                            <Card key={el.title} body inverse style={{ backgroundColor: '#333', borderColor: '#333' }} >
-                                <CardBody>
-                                    <CardTitle><Link to={`/dashboard/news/${el.title}`}> Title: {articles.length > 0 && el.title}</Link></CardTitle>
-                                    <CardSubtitle>Author: {articles.length > 0 && el.author}</CardSubtitle>
-                                    <Button onClick={()=>{this.handleDisplayMore(el.title)}}>View More</Button>
-                                    {el.isOpen ? (
-                                        <CardBody>
-                                            {el.description}
-                                        </CardBody>) : null}
-                                </CardBody>
-                            </Card>
+                        <Card key={el.title} body inverse style={{ backgroundColor: '#333', borderColor: '#333' }} >
+                            <CardBody>
+                                <CardTitle>
+                                    <Link to={{
+                                        pathname: `/dashboard/news/${el.title}`,
+                                        state: {
+                                            data:this.state.articles                                
+                                        },
+                                        
+                                    }}>
+                                        Title: {articles.length > 0 && el.title}
+                                    </Link>
+                                </CardTitle>
+                                <CardSubtitle>Author: {articles.length > 0 && el.author}</CardSubtitle>
+                                <Button onClick={() => { this.handleDisplayMore(el.title) }}>View More</Button>
+                                {el.isOpen ? (
+                                    <CardBody>
+                                        {el.description}
+                                    </CardBody>) : null}
+                            </CardBody>
+                        </Card>
                         // )
                     )
                 }
