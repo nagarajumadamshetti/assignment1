@@ -52,12 +52,7 @@ export default class ActivityTracker extends Component {
         }
     }
 componentDidMount() {
-    this.props.history.push({
-        pathname: '/activityTracker',
-         state: { 
-             from: this.props.location.pathname
-         }
-    })
+    this.props.history.push('/dashboard/login/activitytracker')
 }
     handleFormSubmit = (e) => {
         e.preventDefault();

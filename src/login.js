@@ -40,12 +40,7 @@ class Login extends Component {
         });
     }
 componentDidMount() {
-    this.props.history.push({
-        pathname: '/login',
-         state: { 
-             from: this.props.location.pathname
-         }
-    })
+    this.props.history.push('/dashboard/login"')
 }
     render() {
         const styles = {

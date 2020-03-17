@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import "./App.css";
-import SignUp from "./signUp";
 import { ButtonToggle } from 'reactstrap';
 import Login from "./login";
 import ActivityTracker from "./component/activityTracker";
 import News from "./component/news";
-import { Redirect,withRouter } from "react-router-dom";
+import {  withRouter } from "react-router-dom";
 import Dashboard from "./component/dashboard";
-// import {browserHistory} from 'react-router';
 import DashboardWrapper from "./component/dashboardWraper";
 import NewsDescription from "./component/newsDescription";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import history from 'history';
+
 class App extends Component {
   toggle = false;
   constructor(props) {
@@ -28,6 +28,9 @@ class App extends Component {
     this.toggle = !this.toggle;
     this.setState({ username: this.state.username });
     console.log("login" + this.event.newUserId);
+  }
+  componentDidMount() {
+    this.props.history.push('')
   }
   render() {
     return (
@@ -47,9 +50,7 @@ class App extends Component {
             component={ActivityTracker}
           />
           <Route path="/dashboard/news" exact component={News} />
-          {/* <Route path="/dashboard/news/:id"  render={(props) => <NewsDescription {...props} />} /> */}
           <Route path="/dashboard/news/:id" component={NewsDescription} />
-          {/* <Route path=""> */}
         </div>
       </Router>
     );

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 // import axios from 'axios';
-import Request from 'request';
 import {
-    Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button, CardDeck, CardColumns, Collapse
+    Card, CardBody,
+    CardTitle, CardSubtitle, Button, CardColumns
 } from 'reactstrap';
-import { Link, useParams, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const url = 'http://newsapi.org/v2/top-headlines?' +
     'country=us&' +
@@ -20,12 +19,7 @@ class News extends Component {
 
     // let req = new Request(url);
     componentDidMount() {
-        this.props.history.push({
-            pathname: '/news',
-            state: {
-                from: this.props.location.pathname
-            }
-        })
+        this.props.history.push('/dashboard/news')
         fetch(url)
             .then(response => response.json())
             .then(response => {

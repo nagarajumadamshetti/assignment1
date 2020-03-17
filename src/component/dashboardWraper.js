@@ -3,12 +3,7 @@ import { BrowserRouter as Router, Link, Switch, Route } from 'react-router-dom';
 
 export default class DashboardWrapper extends Component {
     componentDidMount() {
-        this.props.history.push({
-            pathname: '/',
-             state: { 
-                 from: this.props.location.pathname
-             }
-        })
+        this.props.history.push('/')
     }
     render() {
         return (<div>

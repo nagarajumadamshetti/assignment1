@@ -39,12 +39,7 @@ class NewsDescription extends Component {
     }
 
     componentDidMount() {
-        this.props.history.push({
-            pathname: '/newsDescription',
-             state: { 
-                 from: this.props.location.pathname
-             }
-        })
+        this.props.history.push(`/dashboard/news/:${this.props.match.params}`)
         console.log("id is: ");
         const { id } = this.props.match.params;
         console.log(id)
