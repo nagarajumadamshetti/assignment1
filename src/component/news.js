@@ -65,9 +65,8 @@ class News extends Component {
                                     <Link to={{
                                         pathname: `/dashboard/news/${el.title}`,
                                         state: {
-                                            data:this.state.articles                                
+                                            data: this.state.articles
                                         },
-                                        
                                     }}>
                                         Title: {articles.length > 0 && el.title}
                                     </Link>

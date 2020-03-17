@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import DatePicker from "react-datepicker";
+import { Col, Button, Form, FormGroup, Label, Input, FormText, ButtonToggle } from 'reactstrap';
+import { Table } from 'reactstrap';
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import 'react-datepicker/dist/react-datepicker.css';
 import DisplayActivities from './displayActivities';
@@ -21,7 +23,7 @@ export default class ActivityTracker extends Component {
             title: null,
             startDate: new Date(),
             startTime: new Date(),
-            endTime:  moment().endOf("day"),
+            endTime: moment().endOf("day"),
             toggle: false
         }
     }
@@ -49,7 +51,7 @@ export default class ActivityTracker extends Component {
             alert("enter valid end time");
         }
     }
-    
+
     handleFormSubmit = (e) => {
         e.preventDefault();
 
@@ -119,77 +121,85 @@ export default class ActivityTracker extends Component {
     render() {
         const report = JSON.parse(localStorage.getItem(this.props.username));
         let hm = {};
-        if(report)
-        report.tasks.map((el, key) => {
-            if (hm[el.date] === undefined) {
-                hm[el.date] = [];
-                hm[el.date].push(el);
-            }
-            else {
-                hm[el.date].push(el);
-            }
-        });
+        if (report)
+            report.tasks.map((el, key) => {
+                if (hm[el.date] === undefined) {
+                    hm[el.date] = [];
+                    hm[el.date].push(el);
+                }
+                else {
+                    hm[el.date].push(el);
+                }
+            });
         console.log(hm);
         return (
-            <div >
-                <style>{`
-                          .table{
-                                border:1px solid black;
-                            }
-                            .content {
-                                max-width: 500px;
-                                margin: auto;
-                              }
-                              .row {
-                                border:1px solid black; 
-                            }
-                        `}</style>
-                <form className="content">
-                    <h1> Enter Activities</h1>
-                    <input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} />
-                    Start Date:<DatePicker selected={this.state.startDate} onSelect={this.handleStartDate} ></DatePicker><br /><br />
-                  Start Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleStartTime} format={'HH:mm'} /><br /><br />
-                End Time:<TimePickerComponent placeholder="Select a Time" onChange={this.handleEndTime} format={'HH:mm'} /><br /><br />
-                    <button onClick={this.handleFormSubmit} >Submit</button><br /><br />
-                    {this.state.toggle ? (<table className="table" boder='1'>
-                        <tr boder='1' className='row'>
-                            <th boder='1'>Title</th>
-                            <th boder='1'>Duration</th>
-                            {/* <th boder='1'>Date</th> */}
-                        </tr>
-                        <tr className='row'>
-                            {
-                                Object.keys(hm).map((date, index) => {
-                                    return (<div>
-                                        <br></br>
-                                        {date}
-                                        {hm[date].map((el, key) => {
-                                            let b = moment(el.date);
-                                            let a = moment(new Date())
-                                            if (a.diff(b, 'days') <= 7)
-                                            return (<tr className='row'>
+            <div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>
+                <Form>
+                    <FormGroup row>
+                        <Label for="exampleEmail" sm={2}>Title</Label>
+                        <Col sm={10}>
+                            <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="exampleDate" sm={5}>StartDate</Label>
+                        <Col sm={10}>
+                            <DatePicker selected={this.state.startDate} id="exampleDate" onSelect={this.handleStartDate} />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="exampleSelect" sm={2}>StartTime</Label>
+                        <Col sm={10}>
+                            <TimePickerComponent placeholder="Select a Time" id="exampleSelect" onChange={this.handleStartTime} format={'HH:mm'} />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="exampleSelectMulti" sm={2}>End Time</Label>
+                        <Col sm={10}>
+                            <TimePickerComponent placeholder="Select a Time" id="exampleSelectMulti" onChange={this.handleEndTime} format={'HH:mm'} />
+                        </Col>
+                    </FormGroup>
+                    <ButtonToggle color="success" onClick={this.handleFormSubmit} >Submit</ButtonToggle>{' '}
+                </Form>
+                </div>
+                <br></br>
+                <div style={{ flex:'6', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>
+                    {this.state.toggle ? (
+                        // {
+                        Object.keys(hm).map((date, index) => {
+                            return (
+                            <div>
+                                <br></br>
+                                {date}
+                                <table bordered hover>
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Duration</th>
+                                        </tr>
+                                    </thead>
+                                    {hm[date].map((el, key) => {
+                                        let b = moment(el.date);
+                                        let a = moment(new Date())
+                                        if (a.diff(b, 'days') <= 7)
+                                            return (
+                                            <tbody>
+                                                <tr>
                                                 <td>{el.title}</td>
                                                 <td>{el.duration}</td>
-                                            </tr>)
-                                        })
-                                        }
-                                    </div>
+                                            </tr>
+                                            </tbody>)
+                                    })
+                                    }
+                                    </table>
+                                </div>
 
-                                    )
-                                })
-                            }
-
-                            {/* {report.tasks.map((el, key) => {
-                                let b = moment(el.date);
-                                let a = moment(new Date())
-                                if (a.diff(b, 'days') <= 7)
-                                    return <DisplayActivities key={key} title={el.title} duration={el.duration} date={el.date}></DisplayActivities>
-                                else
-                                    return null;
-                            })} */}
-                        </tr>
-                    </table>) : null}
-                </form>
+                                )
+                            })
+                        // }
+                    ) : null}
+                            </div>
             </div>
         )
     }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Col, Row, Button, Form, FormGroup, Label, Input,ButtonToggle } from 'reactstrap';
 import ActivityTracker from './component/activityTracker';
 class Login extends Component {
     constructor(props) {
@@ -50,14 +51,25 @@ class Login extends Component {
             <div className={styles.center}>
                 {this.state.click ?
                     (<div>
-                        <button onClick={this.handleClickLogout}>Logout</button>
+                        <ButtonToggle color="primary"onClick={this.handleClickLogout}>Logout</ButtonToggle>
                         <ActivityTracker username={this.state.uname} password={this.state.password} />
                     </div>)
                     :
-                    (<div> 
-                        <input type="text" placeholder="username" onChange={this.handleUserId} />
-                        <input type="password" placeholder="Password" onChange={this.handlePassword} />
-                        <button onClick={this.handleClickLogin}>Login</button>
+                    (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh',alignContent:'center' }}>
+                        <Form inline>
+                            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                                <Label for="exampleEmail" className="mr-sm-2">USERNAME</Label>
+                                <Input type="text" placeholder="username" onChange={this.handleUserId} id="exampleEmail" />
+                            </FormGroup>
+                            <br></br>
+                            {' '}
+                            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                                <Label for="examplePassword" className="mr-sm-2">PASSWORD</Label>
+                                <Input type="password" placeholder="Password" onChange={this.handlePassword} id="examplePassword" />
+                            </FormGroup>
+                            {' '}
+                            <ButtonToggle color="primary"onClick={this.handleClickLogin}>Sign in</ButtonToggle>
+                        </Form>
                     </div>)}
             </div>
             // <div>

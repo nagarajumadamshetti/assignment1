@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import SignUp from "./signUp";
+import { ButtonToggle } from 'reactstrap';
 import Login from "./login";
 import ActivityTracker from "./component/activityTracker";
 import News from "./component/news";
@@ -32,6 +33,8 @@ class App extends Component {
       <Router>
         <div>
           <h1>Assignment -1 </h1>
+          {' '}
+          <ButtonToggle color="danger" onClick={window.history.back()}>Back</ButtonToggle>
           {/* <Link to='/dashboard'>Dashboard</Link> */}
           <Route path="/" exact component={DashboardWrapper} />
           <Route path="/dashboard" exact component={Dashboard} />
