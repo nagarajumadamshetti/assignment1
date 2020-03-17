@@ -9,9 +9,9 @@ import { Router } from 'react-router';
 // import { createBrowserHistory } from 'history';
 
 ReactDOM.render(
-    <Router>
+    
         <App />
-    </Router>
+    
     ,
     document.getElementById('root'));
 
