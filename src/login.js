@@ -40,7 +40,7 @@ class Login extends Component {
         });
     }
 componentDidMount() {
-    this.props.history.push('/dashboard/login')
+    this.props.history.push('/dashboard/login');
 }
     render() {
         const styles = {
@@ -74,9 +74,6 @@ componentDidMount() {
                         </Form>
                     </div>)}
             </div>
-            // <div>
-            //     hello
-            // </div>
         );
     }
 }

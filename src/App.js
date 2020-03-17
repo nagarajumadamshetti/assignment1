@@ -48,11 +48,7 @@ class App extends Component {
           <Route path="/" exact component={DashboardWrapper} />
           <Route path="/dashboard" exact component={Dashboard} />
           <Route path="/dashboard/login" exact component={Login} />
-          <Route
-            path="/dashboard/login/activitytracker"
-            exact
-            component={ActivityTracker}
-          />
+          <Route path="/dashboard/login/activitytracker" exact component={ActivityTracker}/>
           <Route path="/dashboard/news" exact component={News} />
           <Route path="/dashboard/news/:id" component={NewsDescription} />
         </div>

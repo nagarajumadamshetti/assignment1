@@ -9,6 +9,7 @@ import moment from 'moment';
 
 export default class ActivityTracker extends Component {
     constructor(props) {
+        this.props.history.push('/dashboard/login/activitytracker');
         super(props);
         this.state = {
             users: [{
@@ -51,12 +52,12 @@ export default class ActivityTracker extends Component {
             alert("enter valid end time");
         }
     }
-componentDidMount() {
-    this.props.history.push('/dashboard/login/activitytracker')
-}
+    componentDidMount() {
+        console.log("activity tracker cdm");
+        this.props.history.push('/dashboard/login/activitytracker');
+    }
     handleFormSubmit = (e) => {
         e.preventDefault();
-
         if (this.state.startTime > this.state.endTime) {
             alert("Please enter valid end time");
             return;
@@ -136,72 +137,72 @@ componentDidMount() {
         console.log(hm);
         return (
             <div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>
-                <Form>
-                    <FormGroup row>
-                        <Label for="exampleEmail" sm={2}>Title</Label>
-                        <Col sm={10}>
-                            <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="exampleDate" sm={5}>StartDate</Label>
-                        <Col sm={10}>
-                            <DatePicker selected={this.state.startDate} id="exampleDate" onSelect={this.handleStartDate} />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="exampleSelect" sm={2}>StartTime</Label>
-                        <Col sm={10}>
-                            <TimePickerComponent placeholder="Select a Time" id="exampleSelect" onChange={this.handleStartTime} format={'HH:mm'} />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="exampleSelectMulti" sm={2}>End Time</Label>
-                        <Col sm={10}>
-                            <TimePickerComponent placeholder="Select a Time" id="exampleSelectMulti" onChange={this.handleEndTime} format={'HH:mm'} />
-                        </Col>
-                    </FormGroup>
-                    <ButtonToggle color="success" onClick={this.handleFormSubmit} >Submit</ButtonToggle>{' '}
-                </Form>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>
+                    <Form>
+                        <FormGroup row>
+                            <Label for="exampleEmail" sm={2}>Title</Label>
+                            <Col sm={10}>
+                                <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="exampleDate" sm={5}>StartDate</Label>
+                            <Col sm={10}>
+                                <DatePicker selected={this.state.startDate} id="exampleDate" onSelect={this.handleStartDate} />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="exampleSelect" sm={2}>StartTime</Label>
+                            <Col sm={10}>
+                                <TimePickerComponent placeholder="Select a Time" id="exampleSelect" onChange={this.handleStartTime} format={'HH:mm'} />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="exampleSelectMulti" sm={2}>End Time</Label>
+                            <Col sm={10}>
+                                <TimePickerComponent placeholder="Select a Time" id="exampleSelectMulti" onChange={this.handleEndTime} format={'HH:mm'} />
+                            </Col>
+                        </FormGroup>
+                        <ButtonToggle color="success" onClick={this.handleFormSubmit} >Submit</ButtonToggle>{' '}
+                    </Form>
                 </div>
                 <br></br>
-                <div style={{ flex:'6', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>
+                <div style={{ flex: '6', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>
                     {this.state.toggle ? (
                         // {
                         Object.keys(hm).map((date, index) => {
                             return (
-                            <div>
-                                <br></br>
-                                {date}
-                                <table bordered hover>
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Duration</th>
-                                        </tr>
-                                    </thead>
-                                    {hm[date].map((el, key) => {
-                                        let b = moment(el.date);
-                                        let a = moment(new Date())
-                                        if (a.diff(b, 'days') <= 7)
-                                            return (
-                                            <tbody>
-                                                <tr>
-                                                <td>{el.title}</td>
-                                                <td>{el.duration}</td>
+                                <div>
+                                    <br></br>
+                                    {date}
+                                    <table bordered hover>
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Duration</th>
                                             </tr>
-                                            </tbody>)
-                                    })
-                                    }
+                                        </thead>
+                                        {hm[date].map((el, key) => {
+                                            let b = moment(el.date);
+                                            let a = moment(new Date())
+                                            if (a.diff(b, 'days') <= 7)
+                                                return (
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{el.title}</td>
+                                                            <td>{el.duration}</td>
+                                                        </tr>
+                                                    </tbody>)
+                                        })
+                                        }
                                     </table>
                                 </div>
 
-                                )
-                            })
+                            )
+                        })
                         // }
                     ) : null}
-                            </div>
+                </div>
             </div>
         )
     }
