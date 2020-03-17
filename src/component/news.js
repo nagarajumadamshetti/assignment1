@@ -14,8 +14,7 @@ class News extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            articles: [],
-            isOpen: false
+            articles: []
         };
     }
 
@@ -28,13 +27,25 @@ class News extends Component {
                     articles: response.articles
                 })
             })
+            let arti=this.state.articles;
+            arti.map((el,key)=>{
+                Object.assign(el,{isOpen:false})
+            })
+            this.setState({articles:arti});
     }
     handleDisplayMore = (id) => {
         console.log("source id"+id);
-        let data=this.state.articles.find((el)=>{
-            if(el.source.id===id)
-            this.setState({ isOpen: !this.state.isOpen })
+        let arti=this.state.articles;
+        arti.map((el,key)=>{
+            if(el.title===id)
+            {
+                el.isOpen=!el.isOpen;
+            }
+            this.setState({articles:arti})
+            // this.setState({ isOpen: !this.state.isOpen })
         })
+            
+        
         
     }
     render() {
@@ -51,10 +62,10 @@ class News extends Component {
                         //     <br></br>
                             <Card key={el.title} body inverse style={{ backgroundColor: '#333', borderColor: '#333' }} >
                                 <CardBody>
-                                    <CardTitle><Link to={`/dashboard/news/${el.source.id}`}> Title: {articles.length > 0 && el.title}</Link></CardTitle>
+                                    <CardTitle><Link to={`/dashboard/news/${el.title}`}> Title: {articles.length > 0 && el.title}</Link></CardTitle>
                                     <CardSubtitle>Author: {articles.length > 0 && el.author}</CardSubtitle>
-                                    <Button onClick={()=>{this.handleDisplayMore(el.source.id)}}>View More</Button>
-                                    {this.state.isOpen ? (
+                                    <Button onClick={()=>{this.handleDisplayMore(el.title)}}>View More</Button>
+                                    {el.isOpen ? (
                                         <CardBody>
                                             {el.description}
                                         </CardBody>) : null}
