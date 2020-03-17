@@ -16,7 +16,7 @@ class News extends Component {
             articles: []
         };
     }
-
+    
     // let req = new Request(url);
     componentDidMount() {
         this.props.history.push('/dashboard/news')

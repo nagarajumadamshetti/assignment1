@@ -56,6 +56,7 @@ export default class ActivityTracker extends Component {
         console.log("activity tracker cdm");
         this.props.history.push('/dashboard/login/activitytracker');
     }
+    
     handleFormSubmit = (e) => {
         e.preventDefault();
         if (this.state.startTime > this.state.endTime) {
