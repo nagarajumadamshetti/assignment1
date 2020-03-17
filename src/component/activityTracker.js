@@ -9,7 +9,7 @@ import moment from 'moment';
 
 export default class ActivityTracker extends Component {
     constructor(props) {
-        this.props.history.push('/dashboard/login/activitytracker');
+        
         super(props);
         this.state = {
             users: [{
