@@ -32,13 +32,17 @@ class App extends Component {
   componentDidMount() {
     this.props.history.push('')
   }
+  handleGoBack()
+  {
+    this.props.history.goBack();
+  }
   render() {
     return (
       <Router>
         <div>
           <h1>Assignment -1 </h1>
           {' '}
-          <ButtonToggle color="danger" onClick={this.props.history.goBack()}>Back</ButtonToggle>
+          <ButtonToggle color="danger" onClick={this.props.history.goBack}>Back</ButtonToggle>
           {/* <Link to='/dashboard'>Dashboard</Link> */}
 
           <Route path="/" exact component={DashboardWrapper} />
