@@ -30,7 +30,6 @@ class Login extends Component {
         this.setState({
             click: !this.state.click
         });
-
     }
     handleClickLogout = (e) => {
         this.props.history.goBack();
