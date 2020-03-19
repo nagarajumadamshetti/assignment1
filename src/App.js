@@ -43,7 +43,7 @@ class App extends Component {
           <h1>Assignment -1 </h1>
 
           {' '}
-          <ButtonToggle color="danger" onClick={()=>this.handleGoBack}>Back</ButtonToggle>
+          <ButtonToggle color="danger" onClick={window.history.back()}>Back</ButtonToggle>
           {/* <Link to='/dashboard'>Dashboard</Link> */}
 
           <Route path="/" exact component={DashboardWrapper} />
