@@ -67,7 +67,7 @@ export default class ActivityTracker extends Component {
             alert("Please enter title");
             return;
         }
-        this.setState({ toggle: true });
+        
         let index = 0;
         let items = JSON.parse(localStorage.getItem(this.props.username));
         let flag = 0;
@@ -122,6 +122,9 @@ export default class ActivityTracker extends Component {
             localStorage.setItem(this.props.username, JSON.stringify(obj));
         }
     }
+    handleShowData=()=>{
+        this.setState({ toggle: !this.state.toggle });
+    }
     render() {
         const report = JSON.parse(localStorage.getItem(this.props.username));
         let hm = {};
@@ -166,6 +169,7 @@ export default class ActivityTracker extends Component {
                         </FormGroup>
                         <ButtonToggle color="success" onClick={this.handleFormSubmit} >Submit</ButtonToggle>{' '}
                     </Form>
+                    <Button onClick={this.handleShowData}>Display Activities</Button>
                 </div>
                 <br></br>
                 <div style={{ flex: '6', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>

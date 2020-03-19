@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Router } from 'react-router';
+import 'bootstrap/dist/css/bootstrap.min.css';
 // const createHistory=require("history").createBrowserHistory;
 import { createBrowserHistory } from 'history'
 // const history = createHistory();

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Col, Row, Button, Form, FormGroup, Label, Input,ButtonToggle } from 'reactstrap';
+import { Col, Row, Button,Container, Form, FormGroup, Label, Input, ButtonToggle } from 'reactstrap';
 import ActivityTracker from './component/activityTracker';
+import axios from './axios'
+import { Link } from 'react-router-dom';
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -23,13 +25,21 @@ class Login extends Component {
     }
     handleClickLogin = (e) => {
         console.log(this.state.uname);
-        if (this.state.uname === null || this.state.uname === "") {
-            alert("enter valid user name");
+        if (this.state.uname === null|| this.state.uname==="" ) {
+            alert("enter valid user name ");
             return;
         }
-        this.setState({
+        if (this.state.password === null || this.state.password==="") {
+            alert("enter valid password ");
+            return;
+        }
+        axios.post('/users/login', {
+            username: this.state.uname,
+            password: this.state.password
+        }).then(this.setState({
             click: !this.state.click
-        });
+        }))
+            .catch()
     }
     handleClickLogout = (e) => {
         this.setState({
@@ -38,9 +48,27 @@ class Login extends Component {
             click: !this.state.click
         });
     }
-componentDidMount() {
-    // this.props.history.push('/dashboard/login');
-}
+    handleClickSignUp = () => {
+        if (this.state.uname === null|| this.state.uname==="" ) {
+            alert("enter valid user name ");
+            return;
+        }
+        if (this.state.password === null || this.state.password==="") {
+            alert("enter valid password ");
+            return;
+        }
+        axios.post('/users/signup', {
+            username: this.state.uname,
+            password: this.state.password
+        }).then()
+            .catch()
+        this.setState({
+            click: !this.state.click
+        });
+    }
+    componentDidMount() {
+        // this.props.history.push('/dashboard/login');
+    }
     render() {
         const styles = {
             center: {
@@ -52,25 +80,40 @@ componentDidMount() {
             <div className={styles.center}>
                 {this.state.click ?
                     (<div>
-                        <ButtonToggle color="primary"onClick={this.handleClickLogout}>Logout</ButtonToggle>
+                        <ButtonToggle color="primary" onClick={this.handleClickLogout}>Logout</ButtonToggle>
                         <ActivityTracker username={this.state.uname} password={this.state.password} />
                     </div>)
                     :
-                    (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh',alignContent:'center' }}>
-                        <Form inline>
-                            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                                <Label for="exampleEmail" className="mr-sm-2">USERNAME</Label>
+                    // style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}
+                    (<div >
+                        <Container className="App">
+                            <h2>Sign In</h2>
+                            <Form className="form">
+                                <Col  >
+                                    <FormGroup>
+                                    <Label >USERNAME</Label>
                                 <Input type="text" placeholder="username" onChange={this.handleUserId} id="exampleEmail" />
-                            </FormGroup>
-                            <br></br>
-                            {' '}
-                            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                                <Label for="examplePassword" className="mr-sm-2">PASSWORD</Label>
+                            
+                                        
+                                    </FormGroup>
+                                </Col>
+                                <Col >
+                                    <FormGroup>
+                                    <Label for="examplePassword" >PASSWORD</Label>
                                 <Input type="password" placeholder="Password" onChange={this.handlePassword} id="examplePassword" />
-                            </FormGroup>
+                             
+                                    </FormGroup>
+                                </Col>
+                                <ButtonToggle color="primary" onClick={this.handleClickLogin}>Sign in</ButtonToggle>
+                            <ButtonToggle color='danger' onClick={this.handleClickSignUp}>SignUp</ButtonToggle>
                             {' '}
-                            <ButtonToggle color="primary"onClick={this.handleClickLogin}>Sign in</ButtonToggle>
-                        </Form>
+                            <Col><Row></Row></Col>
+                            <Col>
+                            <Link to={'/dashboard/login/changepassword'}> changepassword</Link>
+                            </Col>
+                            
+                            </Form>
+                        </Container>
                     </div>)}
             </div>
         );

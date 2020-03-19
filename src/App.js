@@ -10,6 +10,7 @@ import DashboardWrapper from "./component/dashboardWraper";
 import NewsDescription from "./component/newsDescription";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import history from 'history';
+import ChangePassword from './component/changePassword';
 
 class App extends Component {
   toggle = false;
@@ -52,6 +53,7 @@ class App extends Component {
           <Route path="/dashboard/login/activitytracker" exact component={ActivityTracker}/>
           <Route path="/dashboard/news" exact component={News} />
           <Route path="/dashboard/news/:id" component={NewsDescription} />
+          <Route path='/dashboard/login/changepassword' component={ChangePassword}/>
         </div>
       </Router>
     );
