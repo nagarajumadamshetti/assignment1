@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import axios from 'axios';
 import {
     Card, CardBody,
-    CardTitle, CardSubtitle, Button, CardColumns
+    CardTitle, CardSubtitle,Container, Button, CardColumns, CardDeck
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
@@ -40,6 +40,9 @@ class News extends Component {
             if (el.title === id) {
                 el.isOpen = !el.isOpen;
             }
+            else {if(el.isOpen===true){
+                el.isOpen=!el.isOpen
+            }}
             this.setState({ articles: arti })
             // this.setState({ isOpen: !this.state.isOpen })
         })
@@ -51,7 +54,11 @@ class News extends Component {
         const { articles } = this.state;
 
         return (<div >
-            <CardColumns>
+            <Container>
+                
+
+                <CardDeck>
+                <CardColumns>
                 {
                     articles.map((el, key) =>
                         <Card key={el.title} body inverse style={{ backgroundColor: '#333', borderColor: '#333' }} >
@@ -78,6 +85,9 @@ class News extends Component {
                     )
                 }
             </CardColumns>
+            </CardDeck>
+            
+            </Container>
         </div>);
     }
 }

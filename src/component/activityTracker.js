@@ -54,7 +54,7 @@ export default class ActivityTracker extends Component {
     }
     componentDidMount() {
         console.log("activity tracker cdm");
-        this.props.history.push('/dashboard/login/activitytracker');
+        // this.props.history.push('/dashboard/login/activitytracker');
     }
     
     handleFormSubmit = (e) => {
