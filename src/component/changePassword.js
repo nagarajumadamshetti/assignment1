@@ -43,7 +43,7 @@ export default class ChangePassword extends Component {
         }
         this.setState({ confirmPassword: e.target.value })
     }
-    handleResetPassword = (e) => {
+    handleResetPassword = async(e) => {
         e.preventDefault();
         if (this.state.confirmPassword === null || this.state.confirmPassword === "") {
             alert("enter valid confirm password");
@@ -53,10 +53,10 @@ export default class ChangePassword extends Component {
             alert("passwords donot match");
             return;
         }
-        axios.post('/users/changePassword', {
+        await axios.post('/users/changePassword', {
             username: this.state.username,
             password: this.state.confirmPassword
-        }).then()
+        }).then((res)=>{alert("new password has is successfully updated ")})
         .catch(console.log("error has occured"));
     }
     render() {
