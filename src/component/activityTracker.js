@@ -6,18 +6,19 @@ import { TimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import 'react-datepicker/dist/react-datepicker.css';
 import DisplayActivities from './displayActivities';
 import moment from 'moment';
+import axios from '../axios';
 
 export default class ActivityTracker extends Component {
     constructor(props) {
-        
+
         super(props);
         this.state = {
             users: [{
-                username: null,
-                password: null,
                 tasks: [{
                     title: null,
-                    duration: null,
+                    start_time: null,
+                    end_time: null,
+                    // duration: null,
                     date: null
                 }]
             }],
@@ -56,8 +57,8 @@ export default class ActivityTracker extends Component {
         console.log("activity tracker cdm");
         // this.props.history.push('/dashboard/login/activitytracker');
     }
-    
-    handleFormSubmit = (e) => {
+
+    handleFormSubmit = async (e) => {
         e.preventDefault();
         if (this.state.startTime > this.state.endTime) {
             alert("Please enter valid end time");
@@ -67,69 +68,164 @@ export default class ActivityTracker extends Component {
             alert("Please enter title");
             return;
         }
-        
+
         let index = 0;
-        let items = JSON.parse(localStorage.getItem(this.props.username));
+        // let items = JSON.parse(localStorage.getItem(this.props.username));
+        let items = null;
+        await axios.post('/users/showActivities', {
+            username: this.props.username
+        }).then((res) => {
+            console.log(res);
+            console.log("axios get");
+            console.log(res.data);
+            items = res;
+        }).catch((err) => {
+            console.log("err");
+            return
+        })
+        // items.map((el,key)=>{
+        //     console.log(el.title)
+        // })
+        let itemsNew=this.state.users.tasks;
         let flag = 0;
         console.log("adsfdsafasdfasdf");
         console.log(items)
         console.log("afterafter");
         if (items) {
             console.log("entered if");
-            console.log(items.tasks.length)
-            for (let i = 0; i < items.tasks.length; i++) {
-                console.log("for entered")
-                console.log(items.username)
-                if (items.username === this.props.username) {
-                    flag = 1;
-                    index = i;
-                    console.log("found")
-                    break;
-                }
-                else {
-                    flag = 0;
-                    index = items.length
-                }
-            }
+            console.log(items)
+            let a, b, c
+            let ojb = { a: {}, b: {} }
+            flag = 1;
         }
         else {
+            console.log("entered else cause there's no data")
             flag = 0;
             index = 0;
         }
         if (flag === 1) {
             console.log("adfasdf");
             let newItem = items;
+            itemsNew=items.data
+            console.log(itemsNew);
             const tasks = {
                 date: moment(this.state.startDate).format('L'),
-                duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
+                start_time: moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss").format("HH:mm:ss"),
+                end_time: moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").format("HH:mm:ss"),
+                // duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
                 title: this.state.title
             }
-            newItem.tasks.push(tasks);
+            itemsNew.push(tasks);
             this.setState({ users: newItem });
             localStorage.setItem(this.props.username, JSON.stringify(newItem));
+            await axios.post('/users/submitActivities', {
+                actSub: {
+                    date: moment(this.state.startDate).format('L'),
+                    start_time: moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss").format("HH:mm:ss"),
+                    end_time: moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").format("HH:mm:ss"),
+                    // duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
+                    title: this.state.title
+                },
+                username: this.props.username
+            })
+            this.setState({ users: itemsNew })
         }
         else {
-            console.log(index);
-            const obj = {
-                username: this.props.username,
-                password: this.props.password,
-                tasks: [{
+            console.log("entered no prev data");
+            await axios.post('/users/submitActivities', {
+                actSub: {
                     date: moment(this.state.startDate).format('L'),
-                    duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
+                    start_time: moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss").format("HH:mm:ss"),
+                    end_time: moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").format("HH:mm:ss"),
+                    // duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
                     title: this.state.title
-                }]
-            }
-            localStorage.setItem(this.props.username, JSON.stringify(obj));
+                },
+                username: this.props.username
+            }).then((res) => {
+                this.setState({
+                    users: [{
+                        date: moment(this.state.startDate).format('L'),
+                        start_time: moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss").format("HH:mm:ss"),
+                        end_time: moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").format("HH:mm:ss"),
+                        // duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
+                        title: this.state.title
+                    }]
+                })
+                console.log("data successfully sent");
+
+            })
+                .catch((error) => {
+                    alert("data not sent");
+                })
+            // const obj = {
+            //     username: this.props.username,
+            //     password: this.props.password,
+            //     tasks: [{
+            //         date: moment(this.state.startDate).format('L'),
+            //         duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
+            //         title: this.state.title
+            //     }]
+            // }
+            // localStorage.setItem(this.props.username, JSON.stringify(obj));
         }
+        // if (items) {
+        //     console.log("entered if");
+        //     console.log(items.tasks.length)
+        //     for (let i = 0; i < items.tasks.length; i++) {
+        //         console.log("for entered")
+        //         console.log(items.username)
+        //         if (items.username === this.props.username) {
+        //             flag = 1;
+        //             index = i;
+        //             console.log("found")
+        //             break;
+        //         }
+        //         else {
+        //             flag = 0;
+        //             index = items.length
+        //         }
+        //     }
+        // }
+        // else {
+        //     flag = 0;
+        //     index = 0;
+        // }
+        // if (flag === 1) {
+        //     console.log("adfasdf");
+        //     let newItem = items;
+        //     const tasks = {
+        //         date: moment(this.state.startDate).format('L'),
+        //         duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
+        //         title: this.state.title
+        //     }
+        //     newItem.tasks.push(tasks);
+        //     this.setState({ users: newItem });
+        //     localStorage.setItem(this.props.username, JSON.stringify(newItem));
+        // }
+        // else {
+        //     console.log(index);
+        //     const obj = {
+        //         username: this.props.username,
+        //         password: this.props.password,
+        //         tasks: [{
+        //             date: moment(this.state.startDate).format('L'),
+        //             duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss"),
+        //             title: this.state.title
+        //         }]
+        //     }
+        //     localStorage.setItem(this.props.username, JSON.stringify(obj));
+        // }
     }
-    handleShowData=()=>{
+    handleShowData = () => {
         this.setState({ toggle: !this.state.toggle });
     }
     render() {
-        const report = JSON.parse(localStorage.getItem(this.props.username));
+        // const report = JSON.parse(localStorage.getItem(this.props.username));
+        const report = this.state.users.tasks;
         let hm = {};
+        console.log("report is"+report);
         if (report)
-            report.tasks.map((el, key) => {
+            report.map((el, key) => {
                 if (hm[el.date] === undefined) {
                     hm[el.date] = [];
                     hm[el.date].push(el);
@@ -179,6 +275,8 @@ export default class ActivityTracker extends Component {
                             return (
                                 <div>
                                     <br></br>
+                                    {"asdfasdfsd"}
+                                    {console.log("displaying activities")}
                                     {date}
                                     <table bordered hover>
                                         <thead>
@@ -188,6 +286,7 @@ export default class ActivityTracker extends Component {
                                             </tr>
                                         </thead>
                                         {hm[date].map((el, key) => {
+                                            let duration=moment(el.end_time, "DD/MM/YYYY HH:mm:ss").diff(moment(el.start_time, "DD/MM/YYYY HH:mm:ss")).format("HH:mm:ss");
                                             let b = moment(el.date);
                                             let a = moment(new Date())
                                             if (a.diff(b, 'days') <= 7)
@@ -195,7 +294,7 @@ export default class ActivityTracker extends Component {
                                                     <tbody>
                                                         <tr>
                                                             <td>{el.title}</td>
-                                                            <td>{el.duration}</td>
+                                                            <td>{duration}</td>
                                                         </tr>
                                                     </tbody>)
                                         })

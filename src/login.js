@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Row, Button,Container, Form, FormGroup, Label, Input, ButtonToggle } from 'reactstrap';
+import { Col, Row, Button, Container, Form, FormGroup, Label, Input, ButtonToggle } from 'reactstrap';
 import ActivityTracker from './component/activityTracker';
 import axios from './axios'
 import { Link } from 'react-router-dom';
@@ -18,18 +18,20 @@ class Login extends Component {
             uname: e.target.value
         });
     }
+
     handlePassword = (e) => {
         this.setState({
             password: e.target.value
         });
     }
+
     handleClickLogin = (e) => {
         console.log(this.state.uname);
-        if (this.state.uname === null|| this.state.uname==="" ) {
+        if (this.state.uname === null || this.state.uname === "") {
             alert("enter valid user name ");
             return;
         }
-        if (this.state.password === null || this.state.password==="") {
+        if (this.state.password === null || this.state.password === "") {
             alert("enter valid password ");
             return;
         }
@@ -39,7 +41,10 @@ class Login extends Component {
         }).then(this.setState({
             click: !this.state.click
         }))
-            .catch()
+            .catch((err) => {
+                alert("invalid credentials");
+                return;
+            })
     }
     handleClickLogout = (e) => {
         this.setState({
@@ -48,23 +53,27 @@ class Login extends Component {
             click: !this.state.click
         });
     }
+
     handleClickSignUp = () => {
-        if (this.state.uname === null|| this.state.uname==="" ) {
+        if (this.state.uname === null || this.state.uname === "") {
             alert("enter valid user name ");
             return;
         }
-        if (this.state.password === null || this.state.password==="") {
+        if (this.state.password === null || this.state.password === "") {
             alert("enter valid password ");
             return;
         }
         axios.post('/users/signup', {
             username: this.state.uname,
             password: this.state.password
-        }).then()
-            .catch()
-        this.setState({
-            click: !this.state.click
-        });
+        }).then((res)=>{
+            if(res)
+            this.setState({ click: !this.state.click})
+        })
+            .catch((err) => {
+                alert('invalid');
+                return;
+            });
     }
     componentDidMount() {
         // this.props.history.push('/dashboard/login');
@@ -91,27 +100,24 @@ class Login extends Component {
                             <Form className="form">
                                 <Col  >
                                     <FormGroup>
-                                    <Label >USERNAME</Label>
-                                <Input type="text" placeholder="username" onChange={this.handleUserId} id="exampleEmail" />
-                            
-                                        
+                                        <Label >USERNAME</Label>
+                                        <Input type="text" placeholder="username" onChange={this.handleUserId} id="exampleEmail" />
                                     </FormGroup>
                                 </Col>
+                                {'  '}
                                 <Col >
                                     <FormGroup>
-                                    <Label for="examplePassword" >PASSWORD</Label>
-                                <Input type="password" placeholder="Password" onChange={this.handlePassword} id="examplePassword" />
-                             
+                                        <Label for="examplePassword" >PASSWORD</Label>
+                                        <Input type="password" placeholder="Password" onChange={this.handlePassword} id="examplePassword" />
                                     </FormGroup>
                                 </Col>
-                                <ButtonToggle color="primary" onClick={this.handleClickLogin}>Sign in</ButtonToggle>
-                            <ButtonToggle color='danger' onClick={this.handleClickSignUp}>SignUp</ButtonToggle>
-                            {' '}
-                            <Col><Row></Row></Col>
-                            <Col>
-                            <Link to={'/dashboard/login/changepassword'}> changepassword</Link>
-                            </Col>
-                            
+                                <ButtonToggle color="success" onClick={this.handleClickLogin}>Sign in</ButtonToggle>
+                                <ButtonToggle color='danger' onClick={this.handleClickSignUp}>SignUp</ButtonToggle>
+                                {' '}
+                                <Col><Row></Row></Col>
+                                <Col>
+                                    <Link to={'/dashboard/login/changepassword'}> changepassword</Link>
+                                </Col>
                             </Form>
                         </Container>
                     </div>)}
