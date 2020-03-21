@@ -9,7 +9,7 @@ import moment from 'moment';
 
 export default class ActivityTracker extends Component {
     constructor(props) {
-        
+
         super(props);
         this.state = {
             users: [{
@@ -56,8 +56,8 @@ export default class ActivityTracker extends Component {
         console.log("activity tracker cdm");
         // this.props.history.push('/dashboard/login/activitytracker');
     }
-    
-    handleFormSubmit = (e) => {
+
+    handleFormSubmit = async (e) => {
         e.preventDefault();
         if (this.state.startTime > this.state.endTime) {
             alert("Please enter valid end time");
@@ -67,14 +67,14 @@ export default class ActivityTracker extends Component {
             alert("Please enter title");
             return;
         }
-        this.setState({ toggle: true });
+        // this.setState({ toggle: true });
         let index = 0;
         let items = JSON.parse(localStorage.getItem(this.props.username));
         let flag = 0;
         console.log("adsfdsafasdfasdf");
         console.log(items)
         console.log("afterafter");
-        if (items) {
+        if (items.tasks) {
             console.log("entered if");
             console.log(items.tasks.length)
             for (let i = 0; i < items.tasks.length; i++) {
@@ -122,13 +122,13 @@ export default class ActivityTracker extends Component {
             localStorage.setItem(this.props.username, JSON.stringify(obj));
         }
     }
-    handleShowData=()=>{
+    handleShowData = () => {
         this.setState({ toggle: !this.state.toggle });
     }
     render() {
         const report = JSON.parse(localStorage.getItem(this.props.username));
         let hm = {};
-        if (report)
+        if (report.tasks)
             report.tasks.map((el, key) => {
                 if (hm[el.date] === undefined) {
                     hm[el.date] = [];
