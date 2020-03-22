@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Col, Row, Button, Form, FormGroup, Label, Input, ButtonToggle } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, Label, Input, ButtonToggle, Container } from 'reactstrap';
 import ActivityTracker from './component/activityTracker';
 import moment from 'moment';
 
@@ -24,19 +24,30 @@ class Login extends Component {
             password: e.target.value
         });
     }
-    handleClickLogin = (e) => {
+    handleClickLogin = async (e) => {
         console.log(this.state.uname);
         if (this.state.uname === null || this.state.uname === "") {
             alert("enter valid user name");
             return;
         }
-        let items=localStorage.getItem(this.state.uname);
-        if(!items)
-        {
+        if (this.state.password === null || this.state.password === "") {
+            alert("enter valid user name");
+            return;
+        }
+        let items = JSON.parse(localStorage.getItem(this.state.uname));
+        console.log(items);
+        console.log(items.username);
+        console.log(items.password)
+        if (!items) {
             alert("user doesnt exist");
             return;
         }
-        this.setState({
+        else if (items.password !== this.state.password) {
+            console.log(items.password)
+            alert("password incorrect");
+            return;
+        }
+        await this.setState({
             click: !this.state.click
         });
     }
@@ -48,7 +59,7 @@ class Login extends Component {
             click: !this.state.click
         });
     }
-    handleClickSignUp = () => {
+    handleClickSignUp = async () => {
         try {
             if (this.state.uname === null || this.state.uname === "") {
                 alert("enter valid user name ");
@@ -56,6 +67,11 @@ class Login extends Component {
             }
             if (this.state.password === null || this.state.password === "") {
                 alert("enter valid password ");
+                return;
+            }
+            let items = JSON.parse(localStorage.getItem(this.state.uname));
+            if (items) {
+                alert("User already exists");
                 return;
             }
             const obj = {
@@ -81,35 +97,53 @@ class Login extends Component {
             }
         }
         return (
-            <div className={styles.center}>
+            // <div className={styles.center}>
+            <Container>
                 {this.state.click ?
-                    (<div>
+                    (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>
+                            <Container>
                         <ButtonToggle color="primary" onClick={this.handleClickLogout}>Logout</ButtonToggle>
                         <ActivityTracker username={this.state.uname} password={this.state.password} />
-                    </div>)
-                    :
-                    (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>
-                        <Form inline>
-                            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                                <Label for="exampleEmail" className="mr-sm-2">USERNAME</Label>
-                                <Input type="text" placeholder="username" onChange={this.handleUserId} id="exampleEmail" />
-                            </FormGroup>
-                            <br></br>
-                            {' '}
-                            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                                <Label for="examplePassword" className="mr-sm-2">PASSWORD</Label>
-                                <Input type="password" placeholder="Password" onChange={this.handlePassword} id="examplePassword" />
-                            </FormGroup>
-                            {' '}
-                            <ButtonToggle color="primary" onClick={this.handleClickLogin}>Sign in</ButtonToggle>
-                            <ButtonToggle color='danger' onClick={this.handleClickSignUp}>SignUp</ButtonToggle>
-                            <Col><Row></Row></Col>
-                            <Col>
+                    </Container>
+                        </div>
+                    )
+                    : (<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', alignContent: 'center' }}>
+                        <Container className="themed-container" fluid="sm">
+                            {/* <Form inline> */}
+                            {/* <h1> </h1> */}
+                            <Row>
+                                <h1> Task Tracker </h1>
+                            </Row>
+                            <Row>
+                                <FormGroup >
+                                    <Col>    <Label for="exampleEmail" >USERNAME</Label></Col>
+                                    <Col> <Input type="text" placeholder="username" onChange={this.handleUserId} id="exampleEmail" /></Col>
+                                </FormGroup>
+                            </Row>
+                            <Row>
+                                <FormGroup >
+                                    <Col><Label for="examplePassword" >PASSWORD</Label></Col>
+                                    <Col><Input type="password" placeholder="Password" onChange={this.handlePassword} id="examplePassword" /></Col>
+                                </FormGroup>
+                            </Row>
+                            <Row>
+                                {/* <Col> */}
+                                <ButtonToggle color="primary" onClick={this.handleClickLogin}>Sign in</ButtonToggle>
+                                {/* </Col> */}
+                                {/* <Col> */}
+                                <ButtonToggle color='danger' onClick={this.handleClickSignUp}>SignUp</ButtonToggle>
+                                {/* </Col> */}
+                            </Row>
+                            <Row>
                                 <Link to={'/dashboard/login/changepassword'}> changepassword</Link>
-                            </Col>
-                        </Form>
-                    </div>)}
-            </div>
+                            </Row>
+                            {/* </Form> */}
+                        </Container>
+                    </div>
+
+                        )}
+                {/* </div> */}</Container>
         );
     }
 }

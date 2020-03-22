@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import DatePicker from "react-datepicker";
-import { Col, Button, Form, FormGroup, Label, Input, FormText, ButtonToggle } from 'reactstrap';
+import { Col, Button, Form, FormGroup, Label, Input, FormText, ButtonToggle, Container } from 'reactstrap';
 import { Table } from 'reactstrap';
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -9,7 +9,6 @@ import moment from 'moment';
 
 export default class ActivityTracker extends Component {
     constructor(props) {
-
         super(props);
         this.state = {
             users: [{
@@ -23,7 +22,7 @@ export default class ActivityTracker extends Component {
             }],
             title: null,
             startDate: new Date(),
-            startTime: new Date(),
+            startTime: moment().startOf('day'),
             endTime: moment().endOf("day"),
             toggle: false
         }
@@ -106,7 +105,7 @@ export default class ActivityTracker extends Component {
             }
             newItem.tasks.push(tasks);
             this.setState({ users: newItem });
-            localStorage.setItem(this.props.username, JSON.stringify(newItem));
+            await localStorage.setItem(this.props.username, JSON.stringify(newItem));
         }
         else {
             console.log(index);
@@ -119,7 +118,14 @@ export default class ActivityTracker extends Component {
                     title: this.state.title
                 }]
             }
-            localStorage.setItem(this.props.username, JSON.stringify(obj));
+            await localStorage.setItem(this.props.username, JSON.stringify(obj));
+            await this.setState({
+                title: null,
+                startTime: null,
+                endTime: null,
+                startDate:null
+            })
+
         }
     }
     handleShowData = () => {
@@ -146,25 +152,25 @@ export default class ActivityTracker extends Component {
                         <FormGroup row>
                             <Label for="exampleEmail" sm={2}>Title</Label>
                             <Col sm={10}>
-                                <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" />
+                                <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" value={this.state.title} />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
                             <Label for="exampleDate" sm={5}>StartDate</Label>
                             <Col sm={10}>
-                                <DatePicker selected={this.state.startDate} id="exampleDate" onSelect={this.handleStartDate} />
+                                <DatePicker value={this.state.startDate}selected={this.state.startDate} id="exampleDate" onSelect={this.handleStartDate} />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
                             <Label for="exampleSelect" sm={2}>StartTime</Label>
                             <Col sm={10}>
-                                <TimePickerComponent placeholder="Select a Time" id="exampleSelect" onChange={this.handleStartTime} format={'HH:mm'} />
+                                <TimePickerComponent value={this.state.startTime} placeholder="Select a Time" id="exampleSelect" onChange={this.handleStartTime} format={'HH:mm'} />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
                             <Label for="exampleSelectMulti" sm={2}>End Time</Label>
                             <Col sm={10}>
-                                <TimePickerComponent placeholder="Select a Time" id="exampleSelectMulti" onChange={this.handleEndTime} format={'HH:mm'} />
+                                <TimePickerComponent placeholder="Select a Time"value={this.state.endTime} id="exampleSelectMulti" onChange={this.handleEndTime} format={'HH:mm'} />
                             </Col>
                         </FormGroup>
                         <ButtonToggle color="success" onClick={this.handleFormSubmit} >Submit</ButtonToggle>{' '}
@@ -177,7 +183,7 @@ export default class ActivityTracker extends Component {
                         // {
                         Object.keys(hm).map((date, index) => {
                             return (
-                                <div>
+                                <Container>
                                     <br></br>
                                     {date}
                                     <table bordered hover>
@@ -187,22 +193,25 @@ export default class ActivityTracker extends Component {
                                                 <th>Duration</th>
                                             </tr>
                                         </thead>
+                                        <tbody>
                                         {hm[date].map((el, key) => {
                                             let b = moment(el.date);
                                             let a = moment(new Date())
                                             if (a.diff(b, 'days') <= 7)
                                                 return (
-                                                    <tbody>
+                                                    
                                                         <tr>
                                                             <td>{el.title}</td>
                                                             <td>{el.duration}</td>
                                                         </tr>
-                                                    </tbody>)
-                                        })
+                                                    )
                                         }
+                                        
+                                        )
+                                        }</tbody>
                                     </table>
-                                </div>
-
+                                
+                                </Container>
                             )
                         })
                         // }
