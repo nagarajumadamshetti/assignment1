@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { ButtonToggle } from 'reactstrap';
+import { ButtonToggle, Container } from 'reactstrap';
 import Login from "./login";
 import ActivityTracker from "./component/activityTracker";
 import News from "./component/news";
@@ -31,30 +31,35 @@ class App extends Component {
     console.log("login" + this.event.newUserId);
   }
   componentDidMount() {
-    this.props.history.push('')
+    // this.props.history.push('')
   }
   handleGoBack()
   {
-    this.props.history.goBack();
+    // this.props.history.goBack();
   }
   render() {
     return (
+      <div >
       <Router>
-        <div>
           {/* <h1>Assignment -1 </h1> */}
           {' '}
-          <ButtonToggle color="danger" onClick={this.props.history.goBack}>Back</ButtonToggle>
+          <Login/>
+          {/* <ButtonToggle color="danger" onClick={this.props.history.goBack}>Back</ButtonToggle> */}
           {/* <Link to='/dashboard'>Dashboard</Link> */}
 
-          <Route path="/" exact component={DashboardWrapper} />
-          <Route path="/dashboard" exact component={Dashboard} />
-          <Route path="/dashboard/login" exact component={Login} />
-          <Route path="/dashboard/login/activitytracker" exact component={ActivityTracker}/>
-          <Route path="/dashboard/news" exact component={News} />
-          <Route path="/dashboard/news/:id" component={NewsDescription} />
-          <Route path='/dashboard/login/changepassword' component={ChangePassword}/>
-        </div>
+          {/* <Route path="/" exact component={DashboardWrapper} />
+          <Route path="/dashboard" exact component={Dashboard} /> */}
+          
+          {/* <Route path="/login" exact component={Login} /> */}
+          
+          <Route path="/login/activitytracker" exact component={ActivityTracker}/>
+          {/* <Route path="/dashboard/news" exact component={News} />
+          <Route path="/dashboard/news/:id" component={NewsDescription} /> */}
+          <Route path='/login/changepassword' component={ChangePassword}/>
+        
       </Router>
+
+      </div>
     );
   }
 }

@@ -19,7 +19,7 @@ class News extends Component {
     
     // let req = new Request(url);
     componentDidMount() {
-        this.props.history.push('/dashboard/news')
+        // this.props.history.push('/dashboard/news')
         fetch(url)
             .then(response => response.json())
             .then(response => {
