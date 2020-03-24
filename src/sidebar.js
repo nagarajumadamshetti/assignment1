@@ -1,7 +1,7 @@
 import React from "react";
 import { slide as Menu } from "react-burger-menu";
 import './styles.css'
-import { Label, Navbar, NavItem } from 'reactstrap'
+import { Label, Navbar, NavItem, Button } from 'reactstrap'
 import { Route, Switch, Link } from 'react-router-dom'
 import ActivityTracker from './component/activityTracker'
 import Reports from './reports'
@@ -19,7 +19,7 @@ class Sidebar extends React.Component {
                         <Label ><h2>Welcome : {this.props.username}</h2></Label>
                     </NavItem>
                     <NavItem>
-                        <button onClick={this.props.logout} style={{ backgroundColor: "white", color: "#282c34" }} className="LogoutBtn">LOGOUT</button>
+                        <Button onClick={this.props.logout} style={{ backgroundColor: "red", color: "#282c34" }} >LOGOUT</Button>
                     </NavItem>
                 </Navbar>
                 <Menu >

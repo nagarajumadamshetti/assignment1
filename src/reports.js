@@ -4,7 +4,7 @@ import { Table, Container } from 'reactstrap';
 let c = 1;
 let hm = {};
 
-let abc=null;
+let abc = null;
 export default class Reports extends Component {
     constructor(props) {
         super(props);
@@ -21,7 +21,7 @@ export default class Reports extends Component {
                 count: 0,
                 duration: 0
             },
-        
+
             2: {
                 id: '2',
                 date: null,
@@ -60,8 +60,7 @@ export default class Reports extends Component {
             },
         }
     }
-    handleReport = () => 
-    {
+    handleReport = () => {
         const report = JSON.parse(localStorage.getItem(this.props.username));
         console.log("entered handle report")
         if (report)
@@ -78,13 +77,13 @@ export default class Reports extends Component {
                     // }
                     let a = moment(new Date())
                     let b = moment(el.date);
-                    console.log("el.date is"+b)
+                    console.log("el.date is" + b)
                     if (a.diff(b, 'days') <= 7) {
                         this.obj[a.diff(b, 'days')].date = b;
                         this.obj[a.diff(b, 'days')].count += 1;
-                        console.log("DURATION:::: "+el.duration)
+                        console.log("DURATION:::: " + el.duration)
                         this.obj[a.diff(b, 'days')].duration += el.duration;
-                        console.log("DURATION:::: "+el.duration)
+                        console.log("DURATION:::: " + el.duration)
                     }
                 });
         // Object.keys(hm).map((key, index) => {
@@ -125,23 +124,24 @@ export default class Reports extends Component {
         console.log("entered handle report")
         if (report)
             if (report.tasks)
-                 report.tasks.map((el, key) => {
-                     if(el.endTime){
+                report.tasks.map((el, key) => {
+                    if (el.endTime) {
                         let a = moment(new Date())
                         let b = moment(el.date);
-                        console.log("el.date is :  :   "+b)
+                        console.log("el.date is :  :   " + b)
                         if (a.diff(b, 'days') <= 7) {
                             console.log("engered sidifdasdfdfasdfasdfasdf");
                             console.log()
                             this.obj[a.diff(b, 'days')].date = b.format('L');
-                            this.obj[a.diff(b, 'days')].count+= 1;
-                            this.obj[a.diff(b, 'days')].duration +=Math.abs((moment(el.endTime).diff(moment(el.startTime)))/60000);
-                            console.log(" duratiion increasing"+this.obj[a.diff(b,'days')].duration)
+                            this.obj[a.diff(b, 'days')].count += 1;
+                            this.obj[a.diff(b, 'days')].duration += (Math.abs((moment(el.endTime).diff(moment(el.startTime))) / 3600000));
+
+                            console.log(" duratiion increasing" + this.obj[a.diff(b, 'days')].duration)
                             return;
                         }
                         else
-                        return
-                     }
+                            return
+                    }
                 }
 
                 );
@@ -159,66 +159,66 @@ export default class Reports extends Component {
                         <tr>
                             <td>{this.obj[0].id}</td>
                             <td>{moment(new Date()).format('L')}</td>
-        {this.obj[0].count?(<td>{this.obj[0].count}</td>):(<td>no activities</td>)
+                            {this.obj[0].count ? (<td>{this.obj[0].count}</td>) : (<td>no activities</td>)
                             }
-        {/* <td>{this.obj[0].count}?{this.obj[0].count}:{"no activities"}</td> */}
-                            <td>{this.obj[0].duration}</td>
+                            {/* <td>{this.obj[0].count}?{this.obj[0].count}:{"no activities"}</td> */}
+                            <td>{this.obj[0].duration}{"   hrs"}</td>
                         </tr>
                         <tr>
                             <td>{this.obj[1].id}</td>
                             <td>{moment(new Date()).subtract(1, 'days').format('L')}</td>
                             {/* <td>{this.obj[1].count}</td> */}
-                            {this.obj[1].count?(<td>{this.obj[1].count}</td>):(<td>no activities</td>)
+                            {this.obj[1].count ? (<td>{this.obj[1].count}</td>) : (<td>no activities</td>)
                             }
-                            <td>{this.obj[1].duration}</td>
+                            <td>{this.obj[1].duration}{"   hrs"}</td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>{moment(new Date()).subtract(2, 'days').format('L')}</td>
                             {/* <td>{this.obj[2].count}</td> */}
-                            {this.obj[2].count?(<td>{this.obj[2].count}</td>):(<td>no activities</td>)
+                            {this.obj[2].count ? (<td>{this.obj[2].count}</td>) : (<td>no activities</td>)
                             }
-                            <td>{this.obj[2].duration}</td>
+                            <td>{this.obj[2].duration}{"   hrs"}</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>{moment(new Date()).subtract(3, 'days').format('L')}</td>
                             {/* <td>{this.obj[3].count}</td> */}
-                            {this.obj[3].count?(<td>{this.obj[3].count}</td>):(<td>no activities</td>)
+                            {this.obj[3].count ? (<td>{this.obj[3].count}</td>) : (<td>no activities</td>)
                             }
-                            <td>{this.obj[3].duration}</td>
+                            <td>{this.obj[3].duration}{"   hrs"}</td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td>{moment(new Date()).subtract(4, 'days').format('L')}</td>
                             {/* <td>{this.obj[4].count}</td> */}
-                            {this.obj[4].count?(<td>{this.obj[4].count}</td>):(<td>no activities</td>)
+                            {this.obj[4].count ? (<td>{this.obj[4].count}</td>) : (<td>no activities</td>)
                             }
-                            <td>{this.obj[4].duration}</td>
+                            <td>{this.obj[4].duration}{"   hrs"}</td>
                         </tr>
                         <tr>
                             <td>5</td>
                             <td>{moment(new Date()).subtract(5, 'days').format('L')}</td>
                             {/* <td>{this.obj[5].count}</td> */}
-                            {this.obj[5].count?(<td>{this.obj[5].count}</td>):(<td>no activities</td>)
+                            {this.obj[5].count ? (<td>{this.obj[5].count}</td>) : (<td>no activities</td>)
                             }
-                            <td>{this.obj[5].duration}</td>
+                            <td>{this.obj[5].duration}{"   hrs"}</td>
                         </tr>
                         <tr>
                             <td>6</td>
                             <td>{moment(new Date()).subtract(6, 'days').format('L')}</td>
                             {/* <td>{this.obj[6].count}</td> */}
-                            {this.obj[6].count?(<td>{this.obj[6].count}</td>):(<td>no activities</td>)
+                            {this.obj[6].count ? (<td>{this.obj[6].count}</td>) : (<td>no activities</td>)
                             }
-                            <td>{this.obj[6].duration}</td>
+                            <td>{this.obj[6].duration}{"   hrs"}</td>
                         </tr>
                         <tr>
                             <td>7</td>
                             <td>{moment(new Date()).subtract(7, 'days').format('L')}</td>
                             {/* <td>{this.obj[7].count}</td> */}
-                            {this.obj[7].count?(<td>{this.obj[7].count}</td>):(<td>no activities</td>)
+                            {this.obj[7].count ? (<td>{this.obj[7].count}</td>) : (<td>no activities</td>)
                             }
-                            <td>{this.obj[7].duration}</td>
+                            <td>{this.obj[7].duration}{"   hrs"}</td>
                         </tr>
                     </tbody>
                 </Table>

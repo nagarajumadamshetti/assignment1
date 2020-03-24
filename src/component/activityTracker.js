@@ -47,7 +47,7 @@ export default class ActivityTracker extends Component {
             endTime: null,
             present: new Date(),
             display: moment.utc(moment()),
-            toggle: false
+            toggle: true
         }
     }
 
@@ -64,15 +64,15 @@ export default class ActivityTracker extends Component {
     }
     handleStartTime = (e) => {
         this.setState({ startTime: moment.utc(e.target.value) });
-        console.log("Start time is :::::::  ++++++===============>>>>>>"+moment.utc(this.state.startTime).format('L'))
+        console.log("Start time is :::::::  ++++++===============>>>>>>" + moment.utc(this.state.startTime).format('L'))
     }
 
     handleEndTime = (e) => {
-        
-            this.setState({ endTime: moment.utc(e.target.value) });
-            console.log("Start time is +  :   "+this.state.endTime)
-        
-        
+
+        this.setState({ endTime: moment.utc(e.target.value) });
+        console.log("Start time is +  :   " + this.state.endTime)
+
+
         //     else {
         //     alert("enter valid end time");
         //     return;
@@ -107,8 +107,8 @@ export default class ActivityTracker extends Component {
 
     handleFormSubmit = async (e) => {
         e.preventDefault();
-        
-         if (this.state.title === null) {
+
+        if (this.state.title === null) {
             alert("Please enter title");
             return;
         }
@@ -169,9 +169,9 @@ export default class ActivityTracker extends Component {
                 tasks: [{
                     date: this.state.startDate,
                     // duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))),
-                    
+
                     duration: (moment.utc(moment(this.state.endTime).diff(moment(this.state.startTime)))),
-                    
+
                     title: this.state.title,
 
                     // startTime: moment(this.state.startTime).format('HH:mm:ss'),
@@ -191,7 +191,7 @@ export default class ActivityTracker extends Component {
             endTime: null,
             present: new Date(),
             display: moment.utc(moment()),
-            toggle: false
+            
         })
         this.setState({ toggle: false })
         this.setState({ toggle: true })
@@ -250,32 +250,34 @@ export default class ActivityTracker extends Component {
                 <br></br>
                 {
                     this.state.toggle ? <div>
-                        {console.log("entered data dsfasdfadfsafgsfggfsdfghjkjhgfcxcvgbhnjm")}
-                        <div className='container'>
-                            <div ><Table bordered striped > <thead>
-                                <tr>
-                                    <th scope="col" ><div className="form-group">
-                                        <button onClick={this.handlePrevious}>Previous</button>
-                                    </div></th>
-                                    <th colSpan='3' scope="col"><div className="input-group form-group">
-                                        <DatePicker selected={this.state.present} onSelect={this.handlePresent} onChange={this.handlePresent} value={this.state.display} />
-                                    </div></th>
-                                    <th scope="col"><div className="form-group">
-                                        <button onClick={this.handleNext}>Next</button>
-                                    </div></th>
-                                </tr>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Start Time</th>
-                                    <th scope="col">End Time</th>
-                                    <th scope="col">Duration</th>
-                                </tr>
-                            </thead>
-                                <Report date={moment(this.state.display).format('L')} data={hm} username={this.props.username}></Report>
-                            </Table>
+                        <Container style={{ border: '2px solid black' }}>
+                            {console.log("entered data dsfasdfadfsafgsfggfsdfghjkjhgfcxcvgbhnjm")}
+                            <div className='container'>
+                                <div ><Table bordered striped dark > <thead>
+                                    <tr>
+                                        <th scope="col" ><div className="form-group">
+                                            <button onClick={this.handlePrevious}>Previous</button>
+                                        </div></th>
+                                        <th colSpan='3' scope="col"><div className="input-group form-group">
+                                            <DatePicker selected={this.state.present} onSelect={this.handlePresent} onChange={this.handlePresent} value={this.state.display} />
+                                        </div></th>
+                                        <th scope="col"><div className="form-group">
+                                            <button onClick={this.handleNext}>Next</button>
+                                        </div></th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Start Time</th>
+                                        <th scope="col">End Time</th>
+                                        <th scope="col">Duration</th>
+                                    </tr>
+                                </thead>
+                                    <Report date={moment(this.state.display).format('L')} data={hm} username={this.props.username}></Report>
+                                </Table>
+                                </div>
                             </div>
-                        </div>
+                            </Container>
                     </div>
                         : null}
             </div>
