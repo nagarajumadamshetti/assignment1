@@ -22,8 +22,6 @@ class Sidebar extends React.Component {
                         <button onClick={this.props.logout} style={{ backgroundColor: "white", color: "#282c34" }} className="LogoutBtn">LOGOUT</button>
                     </NavItem>
                 </Navbar>
-
-
                 <Menu >
                     <Link to="/activities" >activities</Link>
                     <Link to="/report">report</Link>

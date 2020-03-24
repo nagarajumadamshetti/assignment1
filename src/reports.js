@@ -158,50 +158,66 @@ export default class Reports extends Component {
                     <tbody>
                         <tr>
                             <td>{this.obj[0].id}</td>
-                            <td>{this.obj[0].date}</td>
-                            <td>{this.obj[0].count}</td>
+                            <td>{moment(new Date()).format('L')}</td>
+        {this.obj[0].count?(<td>{this.obj[0].count}</td>):(<td>no activities</td>)
+                            }
+        {/* <td>{this.obj[0].count}?{this.obj[0].count}:{"no activities"}</td> */}
                             <td>{this.obj[0].duration}</td>
                         </tr>
                         <tr>
                             <td>{this.obj[1].id}</td>
-                            <td>{this.obj[1].date}</td>
-                            <td>{this.obj[1].count}</td>
+                            <td>{moment(new Date()).subtract(1, 'days').format('L')}</td>
+                            {/* <td>{this.obj[1].count}</td> */}
+                            {this.obj[1].count?(<td>{this.obj[1].count}</td>):(<td>no activities</td>)
+                            }
                             <td>{this.obj[1].duration}</td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>{this.obj[2].date}</td>
-                            <td>{this.obj[2].count}</td>
+                            <td>{moment(new Date()).subtract(2, 'days').format('L')}</td>
+                            {/* <td>{this.obj[2].count}</td> */}
+                            {this.obj[2].count?(<td>{this.obj[2].count}</td>):(<td>no activities</td>)
+                            }
                             <td>{this.obj[2].duration}</td>
                         </tr>
                         <tr>
                             <td>3</td>
-                            <td>{this.obj[3].date}</td>
-                            <td>{this.obj[3].count}</td>
+                            <td>{moment(new Date()).subtract(3, 'days').format('L')}</td>
+                            {/* <td>{this.obj[3].count}</td> */}
+                            {this.obj[3].count?(<td>{this.obj[3].count}</td>):(<td>no activities</td>)
+                            }
                             <td>{this.obj[3].duration}</td>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <td>{this.obj[4].date}</td>
-                            <td>{this.obj[4].count}</td>
+                            <td>{moment(new Date()).subtract(4, 'days').format('L')}</td>
+                            {/* <td>{this.obj[4].count}</td> */}
+                            {this.obj[4].count?(<td>{this.obj[4].count}</td>):(<td>no activities</td>)
+                            }
                             <td>{this.obj[4].duration}</td>
                         </tr>
                         <tr>
                             <td>5</td>
-                            <td>{this.obj[5].date}</td>
-                            <td>{this.obj[5].count}</td>
+                            <td>{moment(new Date()).subtract(5, 'days').format('L')}</td>
+                            {/* <td>{this.obj[5].count}</td> */}
+                            {this.obj[5].count?(<td>{this.obj[5].count}</td>):(<td>no activities</td>)
+                            }
                             <td>{this.obj[5].duration}</td>
                         </tr>
                         <tr>
                             <td>6</td>
-                            <td>{this.obj[6].date}</td>
-                            <td>{this.obj[6].count}</td>
+                            <td>{moment(new Date()).subtract(6, 'days').format('L')}</td>
+                            {/* <td>{this.obj[6].count}</td> */}
+                            {this.obj[6].count?(<td>{this.obj[6].count}</td>):(<td>no activities</td>)
+                            }
                             <td>{this.obj[6].duration}</td>
                         </tr>
                         <tr>
                             <td>7</td>
-                            <td>{this.obj[7].date}</td>
-                            <td>{this.obj[7].count}</td>
+                            <td>{moment(new Date()).subtract(7, 'days').format('L')}</td>
+                            {/* <td>{this.obj[7].count}</td> */}
+                            {this.obj[7].count?(<td>{this.obj[7].count}</td>):(<td>no activities</td>)
+                            }
                             <td>{this.obj[7].duration}</td>
                         </tr>
                     </tbody>

@@ -66,17 +66,17 @@ export default class ActivityTracker extends Component {
         this.setState({ startTime: moment.utc(e.target.value) });
         console.log("Start time is :::::::  ++++++===============>>>>>>"+moment.utc(this.state.startTime).format('L'))
     }
-    
+
     handleEndTime = (e) => {
-        if (this.state.startTime <= e.target.value){
+        
             this.setState({ endTime: moment.utc(e.target.value) });
             console.log("Start time is +  :   "+this.state.endTime)
         
-        }
-            else {
-            alert("enter valid end time");
-            return;
-        }
+        
+        //     else {
+        //     alert("enter valid end time");
+        //     return;
+        // }
     }
     componentDidMount() {
         console.log("activity tracker cdm");
@@ -107,11 +107,8 @@ export default class ActivityTracker extends Component {
 
     handleFormSubmit = async (e) => {
         e.preventDefault();
-        if (this.state.startTime > this.state.endTime) {
-            alert("Please enter valid end time");
-            return;
-        }
-        else if (this.state.title === null) {
+        
+         if (this.state.title === null) {
             alert("Please enter title");
             return;
         }
@@ -158,7 +155,7 @@ export default class ActivityTracker extends Component {
                 // endTime: moment(this.state.endTime).format('HH:mm:ss')
                 // startTime: moment.utc(this.state.startTime),
                 startTime: moment.utc((this.state.startTime)),
-                endTime: moment.utc(moment.utc(this.state.endTime))
+                endTime: (moment.utc(this.state.endTime))
             }
             newItem.tasks.push(tasks);
             this.setState({ users: newItem });
@@ -191,7 +188,7 @@ export default class ActivityTracker extends Component {
             title: null,
             startDate: new Date(),
             startTime: moment.utc(moment()).startOf('day'),
-            endTime: moment().endOf('day'),
+            endTime: null,
             present: new Date(),
             display: moment.utc(moment()),
             toggle: false

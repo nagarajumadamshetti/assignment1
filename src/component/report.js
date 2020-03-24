@@ -15,6 +15,7 @@ class Output extends Component {
         {
         return this.props.data[this.props.date].map((obj) => {
             c++
+            
             return (
                 <tbody>
                     <tr>
