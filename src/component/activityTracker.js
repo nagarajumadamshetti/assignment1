@@ -57,19 +57,19 @@ export default class ActivityTracker extends Component {
         });
     };
 
-    handleStartDate = date => {
-        this.setState({
+    handleStartDate = async date => {
+        await this.setState({
             startDate: date
         });
     }
-    handleStartTime = (e) => {
-        this.setState({ startTime: moment.utc(e.target.value) });
+    handleStartTime = async (e) => {
+        await this.setState({ startTime: moment.utc(e.target.value) });
         console.log("Start time is :::::::  ++++++===============>>>>>>" + moment.utc(this.state.startTime).format('L'))
     }
 
-    handleEndTime = (e) => {
+    handleEndTime = async (e) => {
 
-        this.setState({ endTime: moment.utc(e.target.value) });
+        await this.setState({ endTime: moment.utc(e.target.value) });
         console.log("Start time is +  :   " + this.state.endTime)
 
 
@@ -184,15 +184,15 @@ export default class ActivityTracker extends Component {
             await localStorage.setItem(this.props.username, JSON.stringify(obj));
 
         }
-        this.setState({
-            title: null,
+        await this.setState({
+            title: '',
             startDate: new Date(),
             startTime: moment.utc(moment()).startOf('day'),
             endTime: null,
             present: new Date(),
             display: moment.utc(moment()),
-            
-        })
+
+        });
         this.setState({ toggle: false })
         this.setState({ toggle: true })
     }
@@ -222,7 +222,7 @@ export default class ActivityTracker extends Component {
                         <FormGroup row>
                             <Label for="exampleEmail" sm={2}>Title</Label>
                             <Col sm={10}>
-                                <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" />
+                                <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" value={this.state.title} />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
@@ -243,7 +243,12 @@ export default class ActivityTracker extends Component {
                                 <TimePickerComponent placeholder="Select a Time" id="exampleSelectMulti" onChange={this.handleEndTime} format={'HH:mm'} />
                             </Col>
                         </FormGroup>
-                        <ButtonToggle color="success" onClick={this.handleFormSubmit} >Submit</ButtonToggle>{' '}
+                        <FormGroup row>
+                            <Col sm={10}>
+                                <ButtonToggle color="success" onClick={this.handleFormSubmit} >Submit</ButtonToggle>
+                            </Col>
+                        </FormGroup>
+                        {' '}
                     </Form>
                     {/* <Button onClick={this.handleShowData}>Display Activities</Button> */}
                 </Container>
@@ -255,15 +260,21 @@ export default class ActivityTracker extends Component {
                             <div className='container'>
                                 <div ><Table bordered striped dark > <thead>
                                     <tr>
-                                        <th scope="col" ><div className="form-group">
-                                            <button onClick={this.handlePrevious}>Previous</button>
-                                        </div></th>
-                                        <th colSpan='3' scope="col"><div className="input-group form-group">
-                                            <DatePicker selected={this.state.present} onSelect={this.handlePresent} onChange={this.handlePresent} value={this.state.display} />
-                                        </div></th>
-                                        <th scope="col"><div className="form-group">
-                                            <button onClick={this.handleNext}>Next</button>
-                                        </div></th>
+                                        <th >
+                                            <div >
+                                                <Button color="primary" onClick={this.handlePrevious}>Previous</Button>
+                                            </div>
+                                        </th>
+                                        <th colSpan='3' >
+                                            <div >
+                                                <DatePicker selected={this.state.present} onSelect={this.handlePresent} onChange={this.handlePresent} value={this.state.display} />
+                                            </div>
+                                        </th>
+                                        <th >
+                                            <div >
+                                                <Button color="primary" onClick={this.handleNext}>Next</Button>
+                                            </div>
+                                        </th>
                                     </tr>
                                     <tr>
                                         <th scope="col">#</th>
@@ -277,7 +288,7 @@ export default class ActivityTracker extends Component {
                                 </Table>
                                 </div>
                             </div>
-                            </Container>
+                        </Container>
                     </div>
                         : null}
             </div>

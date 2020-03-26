@@ -4,6 +4,7 @@ import { Col, Row, Button, Form, FormGroup, Label, Input, ButtonToggle, Containe
 import ActivityTracker from './component/activityTracker';
 import moment from 'moment';
 import SideBar from './sidebar';
+import axios from './axios';
 
 class Login extends Component {
     constructor(props) {
@@ -35,14 +36,23 @@ class Login extends Component {
             alert("enter valid user name");
             return;
         }
+        // axios.post('/users/login', {
+        //     username: this.state.uname,
+        //     password: this.state.password
+        // }).then(this.setState({
+        //     click: !this.state.click
+        // })).catch((err) => {
+        //     alert("invalid credentials");
+        //     return;
+        // })
         let items = JSON.parse(localStorage.getItem(this.state.uname));
         console.log(items);
         // console.log(items.username);
         // console.log(items.password)
-        let obj=null;
+        let obj = null;
         if (!items) {
             // alert("user doesnt exist");
-             obj = {
+            obj = {
                 username: this.state.uname,
                 password: this.state.password,
                 tasks: []
@@ -54,7 +64,7 @@ class Login extends Component {
             alert("password incorrect");
             return;
         }
-;
+        ;
         await this.setState({
             click: !this.state.click
         });
@@ -119,30 +129,30 @@ class Login extends Component {
                     )
                     : (
                         <Container className="themed-container" fluid="sm">
-                                <Row>
-                                    <h1> Task Tracker</h1>
-                                </Row>
-                                <Row>
-                                    <FormGroup >
-                                        <Col><Label for="exampleEmail" >USERNAME</Label></Col>
-                                        <Col><Input type="text" placeholder="username" onChange={this.handleUserId} id="exampleEmail" /></Col>
-                                    </FormGroup>
-                                </Row>
-                                <Row>
-                                    <FormGroup >
-                                        <Col><Label for="examplePassword" >PASSWORD</Label></Col>
-                                        <Col><Input type="password" placeholder="Password" onChange={this.handlePassword} id="examplePassword" /></Col>
-                                    </FormGroup>
-                                </Row>
-                                <Row>
-                                    <ButtonToggle color="primary" onClick={this.handleClickLogin}>Sign in</ButtonToggle>
-                                    {/* <ButtonToggle color='danger' onClick={this.handleClickSignUp}>SignUp</ButtonToggle> */}
-                                </Row>
-                                {/* <Row>
+                            <Row>
+                                <h1> Task Tracker</h1>
+                            </Row>
+                            <Row>
+                                <FormGroup >
+                                    <Col><Label for="exampleEmail" >USERNAME</Label></Col>
+                                    <Col><Input type="text" placeholder="username" onChange={this.handleUserId} id="exampleEmail" /></Col>
+                                </FormGroup>
+                            </Row>
+                            <Row>
+                                <FormGroup >
+                                    <Col><Label for="examplePassword" >PASSWORD</Label></Col>
+                                    <Col><Input type="password" placeholder="Password" onChange={this.handlePassword} id="examplePassword" /></Col>
+                                </FormGroup>
+                            </Row>
+                            <Row>
+                                <ButtonToggle color="primary" onClick={this.handleClickLogin}>Sign in</ButtonToggle>
+                                {/* <ButtonToggle color='danger' onClick={this.handleClickSignUp}>SignUp</ButtonToggle> */}
+                            </Row>
+                            {/* <Row>
                                     <Link to={'/dashboard/login/changepassword'}> changepassword</Link>
                                 </Row> */}
-                            </Container>
-                        
+                        </Container>
+
                     )}
             </Container>
         );
