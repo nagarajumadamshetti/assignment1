@@ -15,17 +15,19 @@ class Sidebar extends React.Component {
         return (
             <div>
                 <Navbar>
+                    <Menu >
+                        <Link to="/activities" >activities</Link>
+                        <Link to="/report">report</Link>
+                    </Menu>
                     <NavItem>
                         <Label ><h2>Welcome : {this.props.username}</h2></Label>
                     </NavItem>
                     <NavItem>
                         <Button onClick={this.props.logout} style={{ backgroundColor: "red", color: "#282c34" }} >LOGOUT</Button>
                     </NavItem>
+
                 </Navbar>
-                <Menu >
-                    <Link to="/activities" >activities</Link>
-                    <Link to="/report">report</Link>
-                </Menu>
+
                 <Switch>
                     <Route path="/activities">
                         <ActivityTracker username={this.props.username} password={this.props.password} />

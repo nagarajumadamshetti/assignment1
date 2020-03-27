@@ -27,7 +27,6 @@ class Login extends Component {
         });
     }
     handleClickLogin = async (e) => {
-        console.log(this.state.uname);
         if (this.state.uname === null || this.state.uname === "") {
             alert("enter valid user name");
             return;
@@ -36,39 +35,25 @@ class Login extends Component {
             alert("enter valid user name");
             return;
         }
-        // axios.post('/users/login', {
-        //     username: this.state.uname,
-        //     password: this.state.password
-        // }).then(this.setState({
-        //     click: !this.state.click
-        // })).catch((err) => {
-        //     alert("invalid credentials");
-        //     return;
-        // })
-        let items = JSON.parse(localStorage.getItem(this.state.uname));
-        console.log(items);
-        // console.log(items.username);
-        // console.log(items.password)
-        let obj = null;
-        if (!items) {
-            // alert("user doesnt exist");
-            obj = {
-                username: this.state.uname,
-                password: this.state.password,
-                tasks: []
+        await axios.post('/users/login', {
+            username: this.state.uname,
+            password: this.state.password
+        }).then((res) => {
+            if (res) {
+                this.setState({
+                    click: !this.state.click
+                });
+                alert("login successful");
             }
-            // localStorage.setItem(this.state.uname, JSON.stringify(obj))
+            else {
+                alert("Invalid credentials");
+                return;
+            }
         }
-        else if (items.password !== this.state.password) {
-            console.log(items.password)
-            alert("password incorrect");
+        ).catch((err) => {
+            alert("invalid credentials");
             return;
-        }
-        ;
-        await this.setState({
-            click: !this.state.click
         });
-
     }
     handleClickLogout = (e) => {
         // this.props.history.goBack();
@@ -120,8 +105,7 @@ class Login extends Component {
             <Container className="themed-container" fluid={true}>
                 {this.state.click ?
                     (
-
-                        <div >
+                        <div style={{ styles }}>
                             <SideBar username={this.state.uname} password={this.state.password} logout={this.handleClickLogout}></SideBar>
                             {/* <ActivityTracker username={this.state.uname} password={this.state.password} logout={this.handleClickLogout} /> */}
 

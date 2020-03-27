@@ -15,6 +15,7 @@ import {
     DropdownItem,
     NavbarText
 } from 'reactstrap';
+import axios from '../axios';
 import { Table } from 'reactstrap';
 import { TimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -34,24 +35,28 @@ export default class ActivityTracker extends Component {
                 password: null,
                 tasks: [{
                     title: null,
-                    duration: null,
-                    startTime: null,
-                    endTime: null,
+                    // duration: null,
+                    start_time: null,
+                    end_time: null,
                     date: null
                 }]
             }],
             title: null,
             startDate: new Date(),
-            startTime: moment.utc().startOf('day'),
-            // endTime: moment.utc().endOf('day'),
-            endTime: null,
+            start_time: moment.utc().startOf('day'),
+            // end_time: moment.utc().endOf('day'),
+            end_time: null,
             present: new Date(),
             display: moment.utc(moment()),
             toggle: true
+
         }
+        this.handleChangeActivity = this.handleChangeActivity.bind(this);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
     handleChangeActivity = (e) => {
+        e.preventDefault()
         this.setState({
             title: e.target.value
         });
@@ -63,158 +68,85 @@ export default class ActivityTracker extends Component {
         });
     }
     handleStartTime = async (e) => {
-        await this.setState({ startTime: moment.utc(e.target.value) });
-        console.log("Start time is :::::::  ++++++===============>>>>>>" + moment.utc(this.state.startTime).format('L'))
+        await this.setState({ start_time: (e.target.value) });
     }
 
     handleEndTime = async (e) => {
 
-        await this.setState({ endTime: moment.utc(e.target.value) });
-        console.log("Start time is +  :   " + this.state.endTime)
-
-
-        //     else {
-        //     alert("enter valid end time");
-        //     return;
-        // }
+        await this.setState({ end_time: moment.utc(e.target.value) });
     }
     componentDidMount() {
-        console.log("activity tracker cdm");
         // this.props.history.push('/dashboard/login/activitytracker');
     }
     handlePrevious = () => {
         let date = this.state.present;
         date.setDate(date.getDate() - 1)
         this.setState({ present: date })
-        let currDate = date.getDate()
-        console.log("previous date is :   :   " + currDate)
+
         this.setState({ display: date })
+        // this.setState({ toggle: !this.state.toggle })
+        // this.setState({toggle:!this.state.toggle})
     }
 
     handlePresent = (date) => {
+
         this.setState({ present: date })
-        this.setState({ display: date })
+        this.setState({ display: this.state.present })
+        // this.setState({ toggle: !this.state.toggle })
+        // this.setState({toggle:!this.state.toggle})
     }
+
 
     handleNext = () => {
         let date = this.state.present;
         date.setDate(date.getDate() + 1)
         this.setState({ present: date })
-        let currDate = date.getDate()
-        console.log(currDate)
         this.setState({ display: date })
+        // this.setState({ toggle: !this.state.toggle })
+        // this.setState({toggle:!this.state.toggle})
     }
 
     handleFormSubmit = async (e) => {
         e.preventDefault();
-
         if (this.state.title === null) {
             alert("Please enter title");
             return;
         }
-        // this.setState({ toggle: true });
-        let index = 0;
-        console.log("USERNAME:" + this.props.username)
-        let items = JSON.parse(localStorage.getItem(this.props.username));
-        let flag = 0;
-        console.log("adsfdsafasdfasdf");
-        console.log(items)
-        console.log("afterafter");
-        // if(items)
-        if (items) {
-            console.log("entered if");
-            console.log(items.tasks.length)
-            for (let i = 0; i < items.tasks.length; i++) {
-                console.log("for entered")
-                console.log(items.username)
-                if (items.username === this.props.username) {
-                    flag = 1;
-                    index = i;
-                    console.log("found")
-                    break;
-                }
-                else {
-                    flag = 0;
-                    index = items.length
-                }
-            }
-        }
-        else {
-            flag = 0;
-            index = 0;
-        }
-        if (flag === 1) {
-            console.log("adfasdf");
-            let newItem = items;
-            const tasks = {
-                date: this.state.startDate,
-                // duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))),
-                duration: (moment.utc(moment(this.state.endTime).diff(moment(this.state.startTime)))),
-                title: this.state.title,
-                // startTime: moment(this.state.startTime).format('HH:mm:ss'),
-                // endTime: moment(this.state.endTime).format('HH:mm:ss')
-                // startTime: moment.utc(this.state.startTime),
-                startTime: moment.utc((this.state.startTime)),
-                endTime: (moment.utc(this.state.endTime))
-            }
-            newItem.tasks.push(tasks);
-            this.setState({ users: newItem });
-            await localStorage.setItem(this.props.username, JSON.stringify(newItem));
-        }
-        else {
-            console.log(index);
-            const obj = {
-                username: this.props.username,
-                password: this.props.password,
-                tasks: [{
-                    date: this.state.startDate,
-                    // duration: moment.utc(moment(this.state.endTime, "DD/MM/YYYY HH:mm:ss").diff(moment(this.state.startTime, "DD/MM/YYYY HH:mm:ss"))),
+        if (this.state.end_time)
+            await axios.post('/users/postActivities', {
+                actSub: {
+                    date: moment(this.state.startDate).format('MM-DD-YYYY'),
+                    start_time: moment(this.state.start_time).format('HH:mm:ss'),
+                    end_time: moment(this.state.end_time).format('HH:mm:ss'),
+                    title: this.state.title
+                },
+                username: this.props.username
+            }).then((res) => {
+                alert("data sent sucessfully")
 
-                    duration: (moment.utc(moment(this.state.endTime).diff(moment(this.state.startTime)))),
+            })
+                .catch((error) => {
+                    alert("data not sent");
 
-                    title: this.state.title,
-
-                    // startTime: moment(this.state.startTime).format('HH:mm:ss'),
-                    // endTime: moment(this.state.endTime).format('HH:mm:ss')
-                    startTime: moment.utc(this.state.startTime),
-                    endTime: moment.utc(this.state.endTime)
-                }]
-            }
-            console.log("USERNAME:" + this.props.username)
-            await localStorage.setItem(this.props.username, JSON.stringify(obj));
-
-        }
-        await this.setState({
-            title: '',
-            startDate: new Date(),
-            startTime: moment.utc(moment()).startOf('day'),
-            endTime: null,
-            present: new Date(),
-            display: moment.utc(moment()),
-
-        });
-        this.setState({ toggle: false })
-        this.setState({ toggle: true })
-    }
-    render() {
-        const report = JSON.parse(localStorage.getItem(this.props.username));
-        let hm = {};
-        if (report)
-            if (report.tasks)
-                report.tasks.map((el, key) => {
-                    if (hm[moment(el.date).format('L')] === undefined) {
-                        hm[moment(el.date).format('L')] = [];
-                        hm[moment(el.date).format('L')].push(el);
-                        console.log(moment(el.date).format('L'))
-                    }
-                    else {
-                        hm[moment(el.date).format('L')].push(el);
-                        console.log(moment(el.date).format('L'))
-
-                    }
                 });
-        console.log("hashmaomahadfjakdf" + hm);
+        else
+            await axios.post('/users/submitActivities', {
+                actSub: {
+                    date: moment(this.state.startDate).format('MM-DD-YYYY'),
+                    start_time: moment(this.state.start_time).format('HH:mm:ss'),
+                    title: this.state.title
+                },
+                username: this.props.username
+            }).then((res) => {
+                alert("data sent sucessfully")
 
+            })
+                .catch((error) => {
+                    alert("data not sent");
+                });
+    }
+
+    render() {
         return (
             <div>
                 <Container style={{ border: '2px solid red' }}>
@@ -222,7 +154,7 @@ export default class ActivityTracker extends Component {
                         <FormGroup row>
                             <Label for="exampleEmail" sm={2}>Title</Label>
                             <Col sm={10}>
-                                <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" value={this.state.title} />
+                                <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
@@ -253,44 +185,47 @@ export default class ActivityTracker extends Component {
                     {/* <Button onClick={this.handleShowData}>Display Activities</Button> */}
                 </Container>
                 <br></br>
-                {
-                    this.state.toggle ? <div>
-                        <Container style={{ border: '2px solid black' }}>
-                            {console.log("entered data dsfasdfadfsafgsfggfsdfghjkjhgfcxcvgbhnjm")}
-                            <div className='container'>
-                                <div ><Table bordered striped dark > <thead>
-                                    <tr>
-                                        <th >
-                                            <div >
-                                                <Button color="primary" onClick={this.handlePrevious}>Previous</Button>
-                                            </div>
-                                        </th>
-                                        <th colSpan='3' >
-                                            <div >
-                                                <DatePicker selected={this.state.present} onSelect={this.handlePresent} onChange={this.handlePresent} value={this.state.display} />
-                                            </div>
-                                        </th>
-                                        <th >
-                                            <div >
-                                                <Button color="primary" onClick={this.handleNext}>Next</Button>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Start Time</th>
-                                        <th scope="col">End Time</th>
-                                        <th scope="col">Duration</th>
-                                    </tr>
-                                </thead>
-                                    <Report date={moment(this.state.display).format('L')} data={hm} username={this.props.username}></Report>
-                                </Table>
-                                </div>
-                            </div>
-                        </Container>
+
+                <Container style={{ border: '2px solid black' }}>
+
+                    <div className='container'>
+                        <div ><Table bordered striped dark > <thead>
+                            <tr>
+                                <th >
+                                    <div >
+                                        <Button color="primary" onClick={this.handlePrevious}>Previous</Button>
+                                    </div>
+                                </th>
+                                <th colSpan='3'>
+                                    <div >
+                                        <DatePicker selected={this.state.present} onSelect={this.handlePresent} value={this.state.present} />
+                                    </div>
+                                </th>
+                                <th >
+                                    <div >
+                                        <Button color="primary" onClick={this.handleNext}>Next</Button>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Start Time</th>
+                                <th scope="col">End Time</th>
+                                <th scope="col">Duration</th>
+                            </tr>
+                        </thead>
+                            {
+                                this.state.toggle ? (<Report date={moment(this.state.present).format('YYYY-MM-DD')} username={this.props.username}></Report>
+
+                                ) : null
+                            }
+
+                        </Table>
+                        </div>
                     </div>
-                        : null}
+                </Container>
+
             </div>
         )
     }

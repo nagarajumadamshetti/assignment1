@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import moment from 'moment';
 import { Table, Container } from 'reactstrap';
-let c = 1;
-let hm = {};
+import axios from './axios';
 
-let abc = null;
+
 export default class Reports extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            userReport: null
+        }
         this.obj = {
             0: {
                 id: '0',
@@ -60,91 +62,37 @@ export default class Reports extends Component {
             },
         }
     }
-    handleReport = () => {
-        const report = JSON.parse(localStorage.getItem(this.props.username));
-        console.log("entered handle report")
-        if (report)
-            if (report.tasks)
-                report.tasks.map((el, key) => {
-                    // if (hm[moment(el.date).format('L')] === undefined) {
-                    //     hm[moment(el.date).format('L')] = [];
-                    //     hm[moment(el.date).format('L')].push(el);
-                    //     console.log(moment(el.date).format('L'))
-                    // }
-                    // else {
-                    //     hm[moment(el.date).format('L')].push(el);
-                    //     console.log(moment(el.date).format('L'))
-                    // }
-                    let a = moment(new Date())
-                    let b = moment(el.date);
-                    console.log("el.date is" + b)
-                    if (a.diff(b, 'days') <= 7) {
-                        this.obj[a.diff(b, 'days')].date = b;
-                        this.obj[a.diff(b, 'days')].count += 1;
-                        console.log("DURATION:::: " + el.duration)
-                        this.obj[a.diff(b, 'days')].duration += el.duration;
-                        console.log("DURATION:::: " + el.duration)
-                    }
-                });
-        // Object.keys(hm).map((key, index) => {
-        //     hm[key].map((el, key) => {
-        //         // let duration=moment(el.end_time, "DD/MM/YYYY HH:mm:ss").diff(moment(el.start_time, "DD/MM/YYYY HH:mm:ss")).format("HH:mm:ss");
-        //         let b = moment(el.key);
-        //         let a = moment(new Date())
-        //         if (a.diff(b, 'days') <= 7) {
-        //             obj[a.diff(b, 'days')].date = b;
-        //             obj[a.diff(b, 'days')].count += 1;
-        //             obj[a.diff(b, 'days')].duration += el.duration;
-        //         }
-        //     })
-        // })
-        //     c++;
-        //     let count = 0;
-        //     let dur = null;
-        //     hm[key].map((el) => {
-        //         console.log("inside inner loop of reports")
-        //         dur += el.duration;
-        //         count += 1;
-        //         console.log("duration is  " + el.duration)
-        //         console.log("duration is:   : :  :" + dur);
-        //     })
-        //     return (
-        //         <tbody>
-        //             <tr>
-        //                 <td>{c}</td>
-        //                 <td>{hm[key]}</td>
-        //                 <td>{count}</td>
-        //                 <td>{dur}</td>
-        //             </tr>
-        //         </tbody>)
-        // })
+
+    componentDidMount() {
+        axios.post('/users/userReport', {
+            username: this.props.username
+        }).then((res) => {
+            this.setState({ userReport: res })
+            alert("user report recieved");
+        }).catch((err) => {
+            alert("an error occured");
+            return;
+        })
     }
+    
     render() {
-        const report = JSON.parse(localStorage.getItem(this.props.username));
-        console.log("entered handle report")
-        if (report)
-            if (report.tasks)
-                report.tasks.map((el, key) => {
-                    if (el.endTime) {
-                        let a = moment(new Date())
-                        let b = moment(el.date);
-                        console.log("el.date is :  :   " + b)
-                        if (a.diff(b, 'days') <= 7) {
-                            console.log("engered sidifdasdfdfasdfasdfasdf");
-                            console.log()
-                            this.obj[a.diff(b, 'days')].date = b.format('L');
-                            this.obj[a.diff(b, 'days')].count += 1;
-                            this.obj[a.diff(b, 'days')].duration += (Math.abs((moment(el.endTime).diff(moment(el.startTime))) / 3600000));
-
-                            console.log(" duratiion increasing" + this.obj[a.diff(b, 'days')].duration)
-                            return;
-                        }
-                        else
-                            return
-                    }
-                }
-
-                );
+        if(this.state.userReport){
+            Object.keys(this.state.userReport.data).sort().map((date, index) => {
+                // return (
+                    this.obj[this.state.userReport.data[date].id].date =this.state.userReport.data[date].date;
+                    this.obj[this.state.userReport.data[date].id].count =this.state.userReport.data[date].count
+                    this.obj[this.state.userReport.data[date].id].duration =this.state.userReport.data[date].duration
+                    // <tr>
+                    //     <td>{this.state.userReport.data[date].id}</td>
+                    //     <td>{this.state.userReport.data[date].date}</td>
+                    //     <td>{this.state.userReport.data[date].count}</td>
+                    //     <td>{this.state.userReport.data[date].duration}{"   hrs"}</td>
+                    // </tr>
+                // )
+            })
+        }
+            
+        
         return (
             <div>
                 <Table bordered striped dark > <thead>
@@ -155,7 +103,7 @@ export default class Reports extends Component {
                         <th scope="col">Total Duration</th>
                     </tr>
                 </thead>
-                    <tbody>
+                <tbody>
                         <tr>
                             <td>{this.obj[0].id}</td>
                             <td>{moment(new Date()).format('L')}</td>
@@ -222,6 +170,6 @@ export default class Reports extends Component {
                         </tr>
                     </tbody>
                 </Table>
-            </div>);
+            </div >);
     }
 }
