@@ -96,8 +96,8 @@ export default class ActivityTracker extends Component {
         if (this.state.title === null || this.state.title === "") {
             toast.error("Please enter title!!", {
                 position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: false,
+                autoClose: 2000,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true
@@ -222,7 +222,7 @@ export default class ActivityTracker extends Component {
         <div class="scrollbar-thumb scrollbar-thumb-y"></div>
     </div>
 </Scrollbar> */}
-                    <Table responsive bordered striped dark  > <thead>
+                    <Table responsive  dark  > <thead>
                         <tr>
                             <th style={{ textAlign: "center" }}>
                                 <Button color="primary" onClick={this.handlePrevious}>Previous</Button>

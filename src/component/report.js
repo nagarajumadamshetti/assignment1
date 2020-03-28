@@ -21,7 +21,7 @@ class Output extends Component {
                 toast.info(`${this.props.date}'s data recieved`, {
                     position: "top-right",
                     autoClose: 1000,
-                    hideProgressBar: false,
+                    hideProgressBar: true,
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true
@@ -43,14 +43,14 @@ class Output extends Component {
         await axios.get('/users/getActivities/' + this.props.username + '/' + this.props.date
         ).then((res) => {
             this.setState({ userActivities: res });
-            toast.info(`${this.props.date}'s data recieved`, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true
-            });
+            // toast.info(`${this.props.date}'s data recieved`, {
+            //     position: "top-right",
+            //     autoClose: 3000,
+            //     hideProgressBar: true,
+            //     closeOnClick: true,
+            //     pauseOnHover: true,
+            //     draggable: true
+            // });
         })
             .catch((err) => {
                 toast.warn(`error in fetching  ${this.props.date}'s data  `, {
