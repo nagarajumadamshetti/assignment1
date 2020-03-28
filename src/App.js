@@ -4,13 +4,27 @@ import { ButtonToggle, Container } from 'reactstrap';
 import Login from "./login";
 import ActivityTracker from "./component/activityTracker";
 import News from "./component/news";
-import {  withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Dashboard from "./component/dashboard";
 import DashboardWrapper from "./component/dashboardWraper";
 import NewsDescription from "./component/newsDescription";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import history from 'history';
 import ChangePassword from './component/changePassword';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// toast.configure({
+//   position="top-right"
+// autoClose={ 5000}
+// hideProgressBar={ false}
+// newestOnTop
+// closeOnClick
+// rtl={ false}
+// pauseOnVisibilityChange
+// draggable
+// pauseOnHover
+// });
 
 class App extends Component {
   toggle = false;
@@ -33,31 +47,31 @@ class App extends Component {
   componentDidMount() {
     // this.props.history.push('')
   }
-  handleGoBack()
-  {
+  handleGoBack() {
     // this.props.history.goBack();
   }
   render() {
     return (
-      <div >
-      <Router>
-          {/* <h1>Assignment -1 </h1> */}
-          {' '}
-          <Login/>
-          {/* <ButtonToggle color="danger" onClick={this.props.history.goBack}>Back</ButtonToggle> */}
-          {/* <Link to='/dashboard'>Dashboard</Link> */}
-
-          {/* <Route path="/" exact component={DashboardWrapper} />
-          <Route path="/dashboard" exact component={Dashboard} /> */}
-          
-          {/* <Route path="/login" exact component={Login} /> */}
-          
-          <Route path="/login/activitytracker" exact component={ActivityTracker}/>
-          {/* <Route path="/dashboard/news" exact component={News} />
-          <Route path="/dashboard/news/:id" component={NewsDescription} /> */}
-          <Route path='/login/changepassword' component={ChangePassword}/>
-        
-      </Router>
+      <div 
+      // ref="image-pane"
+      // styles={{ backgroundImage:  'url('+process.env.BACKGROUND_IMAGE+')' }}
+      >
+        <Router>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover
+          />
+          <Login />
+          <Route path="/login/activitytracker" exact component={ActivityTracker} />
+          <Route path='/login/changepassword' component={ChangePassword} />
+        </Router>
 
       </div>
     );

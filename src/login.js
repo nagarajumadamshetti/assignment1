@@ -5,7 +5,7 @@ import ActivityTracker from './component/activityTracker';
 import moment from 'moment';
 import SideBar from './sidebar';
 import axios from './axios';
-
+import { toast } from 'react-toastify';
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -39,28 +39,58 @@ class Login extends Component {
             username: this.state.uname,
             password: this.state.password
         }).then((res) => {
-            if (res) {
+            if (res.data.value) {
                 this.setState({
                     click: !this.state.click
                 });
-                alert("login successful");
+                toast.success("You're with us", {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
             }
             else {
-                alert("Invalid credentials");
+                toast.error('Invalid credentials', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
                 return;
             }
         }
         ).catch((err) => {
-            alert("invalid credentials");
+            toast.warn('error recieved from backend server', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
             return;
         });
     }
     handleClickLogout = (e) => {
         // this.props.history.goBack();
+
         this.setState({
             uname: null,
             password: null,
             click: !this.state.click
+        });
+        toast.error('Logged out successfully', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
         });
     }
     handleClickSignUp = async () => {

@@ -2,18 +2,7 @@ import React, { Component } from 'react';
 import DatePicker from "react-datepicker";
 import { slide as Menu } from 'react-burger-menu';
 import {
-    Col, Button, Form, FormGroup, Label, Input, FormText, ButtonToggle, Container, Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    NavbarText
+    Col, Button, Form, FormGroup, Label, Input, ButtonToggle, Container,
 } from 'reactstrap';
 import axios from '../axios';
 import { Table } from 'reactstrap';
@@ -25,6 +14,12 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 // import classNames from 'classnames';
 import Report from './report';
+import { toast } from 'react-toastify'
+
+import RSC from "react-scrollbars-custom";
+import Scrollbar from 'smooth-scrollbar';
+
+import ScrollArea from 'react-scrollbar'
 
 export default class ActivityTracker extends Component {
     constructor(props) {
@@ -35,17 +30,15 @@ export default class ActivityTracker extends Component {
                 password: null,
                 tasks: [{
                     title: null,
-                    // duration: null,
                     start_time: null,
                     end_time: null,
                     date: null
                 }]
             }],
-            title: null,
+            title: '',
             startDate: new Date(),
             start_time: moment.utc().startOf('day'),
-            // end_time: moment.utc().endOf('day'),
-            end_time: null,
+            end_time: '',
             present: new Date(),
             display: moment.utc(moment()),
             toggle: true
@@ -82,18 +75,12 @@ export default class ActivityTracker extends Component {
         let date = this.state.present;
         date.setDate(date.getDate() - 1)
         this.setState({ present: date })
-
         this.setState({ display: date })
-        // this.setState({ toggle: !this.state.toggle })
-        // this.setState({toggle:!this.state.toggle})
     }
 
     handlePresent = (date) => {
-
         this.setState({ present: date })
         this.setState({ display: this.state.present })
-        // this.setState({ toggle: !this.state.toggle })
-        // this.setState({toggle:!this.state.toggle})
     }
 
 
@@ -102,14 +89,19 @@ export default class ActivityTracker extends Component {
         date.setDate(date.getDate() + 1)
         this.setState({ present: date })
         this.setState({ display: date })
-        // this.setState({ toggle: !this.state.toggle })
-        // this.setState({toggle:!this.state.toggle})
     }
 
     handleFormSubmit = async (e) => {
         e.preventDefault();
-        if (this.state.title === null) {
-            alert("Please enter title");
+        if (this.state.title === null || this.state.title === "") {
+            toast.error("Please enter title!!", {
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
             return;
         }
         if (this.state.end_time)
@@ -122,11 +114,24 @@ export default class ActivityTracker extends Component {
                 },
                 username: this.props.username
             }).then((res) => {
-                alert("data sent sucessfully")
-
+                toast.info("data sent sucessfully", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
             })
                 .catch((error) => {
-                    alert("data not sent");
+                    toast.warn("data not sent", {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true
+                    });
 
                 });
         else
@@ -138,29 +143,49 @@ export default class ActivityTracker extends Component {
                 },
                 username: this.props.username
             }).then((res) => {
-                alert("data sent sucessfully")
-
+                toast.info("data sent sucessfully", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
             })
                 .catch((error) => {
-                    alert("data not sent");
+                    toast.warn("data not sent", {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true
+                    });
+
                 });
+        this.setState({
+            title: '',
+            end_time: '',
+            startDate: new Date(),
+            start_time: moment.utc().startOf('day')
+        })
     }
 
     render() {
         return (
-            <div>
+            <Container>
                 <Container style={{ border: '2px solid red' }}>
                     <Form>
                         <FormGroup row>
                             <Label for="exampleEmail" sm={2}>Title</Label>
-                            <Col sm={10}>
-                                <Input type="text" placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" />
+                            <Col sm={2}>
+                                <Input type="text" value={this.state.title} placeholder="Enter the Activity" onChange={this.handleChangeActivity} id="exampleEmail" />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
-                            <Label for="exampleDate" sm={5}>StartDate</Label>
-                            <Col sm={10}>
-                                <DatePicker selected={this.state.startDate} showTimeSelect id="exampleDate" onSelect={this.handleStartDate} />
+                            <Label for="exampleDate" sm={2}>StartDate</Label>
+                            <Col sm={3}>
+                                <DatePicker selected={this.state.startDate} value={this.state.startDate} id="exampleDate" onSelect={this.handleStartDate} />
                             </Col>
                         </FormGroup>
                         <FormGroup row>
@@ -176,57 +201,55 @@ export default class ActivityTracker extends Component {
                             </Col>
                         </FormGroup>
                         <FormGroup row>
-                            <Col sm={10}>
+                            <Col >
                                 <ButtonToggle color="success" onClick={this.handleFormSubmit} >Submit</ButtonToggle>
                             </Col>
                         </FormGroup>
                         {' '}
                     </Form>
-                    {/* <Button onClick={this.handleShowData}>Display Activities</Button> */}
                 </Container>
                 <br></br>
 
                 <Container style={{ border: '2px solid black' }}>
+                    {/* <Scrollbar>
+    <div class="scroll-content">
+        your contents here...
+    </div>
+    <div class="scrollbar-track scrollbar-track-x">
+        <div class="scrollbar-thumb scrollbar-thumb-x"></div>
+    </div>
+    <div class="scrollbar-track scrollbar-track-y">
+        <div class="scrollbar-thumb scrollbar-thumb-y"></div>
+    </div>
+</Scrollbar> */}
+                    <Table responsive bordered striped dark  > <thead>
+                        <tr>
+                            <th style={{ textAlign: "center" }}>
+                                <Button color="primary" onClick={this.handlePrevious}>Previous</Button>
+                            </th>
+                            <th colSpan='3' style={{ textAlign: "center" }}>
+                                <DatePicker selected={this.state.present} onSelect={this.handlePresent} value={this.state.present} />
+                            </th>
+                            <th style={{ textAlign: "center" }}>
+                                <Button color="primary" onClick={this.handleNext}>Next</Button>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style={{ textAlign: "center" }}>#</th>
+                            <th style={{ textAlign: "center" }}>Title</th>
+                            <th style={{ textAlign: "center" }}>Start Time</th>
+                            <th style={{ textAlign: "center" }}>End Time</th>
+                            <th style={{ textAlign: "center" }}>Duration</th>
+                        </tr>
+                    </thead>
+                        {/* <RSC  style={{ width: 250, height: 250 }}> */}
 
-                    <div className='container'>
-                        <div ><Table bordered striped dark > <thead>
-                            <tr>
-                                <th >
-                                    <div >
-                                        <Button color="primary" onClick={this.handlePrevious}>Previous</Button>
-                                    </div>
-                                </th>
-                                <th colSpan='3'>
-                                    <div >
-                                        <DatePicker selected={this.state.present} onSelect={this.handlePresent} value={this.state.present} />
-                                    </div>
-                                </th>
-                                <th >
-                                    <div >
-                                        <Button color="primary" onClick={this.handleNext}>Next</Button>
-                                    </div>
-                                </th>
-                            </tr>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Start Time</th>
-                                <th scope="col">End Time</th>
-                                <th scope="col">Duration</th>
-                            </tr>
-                        </thead>
-                            {
-                                this.state.toggle ? (<Report date={moment(this.state.present).format('YYYY-MM-DD')} username={this.props.username}></Report>
-
-                                ) : null
-                            }
-
-                        </Table>
-                        </div>
-                    </div>
+                        <Report date={moment(this.state.present).format('YYYY-MM-DD')} username={this.props.username}></Report>
+                        {/*  </RSC> */}
+                    </Table>
                 </Container>
+            </Container>
 
-            </div>
         )
     }
 }

@@ -1,7 +1,7 @@
 import React from "react";
-import { slide as Menu } from "react-burger-menu";
+import { reveal as Menu } from "react-burger-menu";
 import './styles.css'
-import { Label, Navbar, NavItem, Button } from 'reactstrap'
+import { Label, Navbar, NavItem, Button, Nav, NavbarBrand } from 'reactstrap'
 import { Route, Switch, Link } from 'react-router-dom'
 import ActivityTracker from './component/activityTracker'
 import Reports from './reports'
@@ -14,18 +14,19 @@ class Sidebar extends React.Component {
     render() {
         return (
             <div>
-                <Navbar>
-                    <Menu >
-                        <Link to="/activities" >activities</Link>
-                        <Link to="/report">report</Link>
-                    </Menu>
+                <Menu >
+                    <Link to="/activities" >activities</Link>
+                    <Link to="/report">report</Link>
+                </Menu>
+                <Navbar color="light" light >
+                    <NavbarBrand>
+                    </NavbarBrand>
                     <NavItem>
                         <Label ><h2>Welcome : {this.props.username}</h2></Label>
                     </NavItem>
                     <NavItem>
-                        <Button onClick={this.props.logout} style={{ backgroundColor: "red", color: "#282c34" }} >LOGOUT</Button>
+                        <Button onClick={this.props.logout}  >LOGOUT</Button>
                     </NavItem>
-
                 </Navbar>
 
                 <Switch>

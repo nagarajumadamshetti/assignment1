@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import moment from 'moment';
 import axios from '../axios';
+import { toast } from 'react-toastify';
+import RSC from 'react-scrollbars-custom';
 
 class Output extends Component {
     constructor(props) {
@@ -13,26 +15,52 @@ class Output extends Component {
     }
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.date !== this.props.date)
-            axios.post('/users/getActivities', {
-                username: this.props.username,
-                date: this.props.date
-            }).then((res) => {
+            axios.get('/users/getActivities/' + this.props.username + '/' + this.props.date
+            ).then((res) => {
                 this.setState({ userActivities: res })
+                toast.info(`${this.props.date}'s data recieved`, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
             })
                 .catch((err) => {
-                    alert("cannot get data from db at report.js");
+                    toast.warn(`error in fetching  ${this.props.date}'s data  `, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true
+                    });
                     return;
                 });
     }
     async componentDidMount() {
-        await axios.post('/users/getActivities', {
-            username: this.props.username,
-            date: this.props.date
-        }).then((res) => {
-            this.setState({ userActivities: res })
+        await axios.get('/users/getActivities/' + this.props.username + '/' + this.props.date
+        ).then((res) => {
+            this.setState({ userActivities: res });
+            toast.info(`${this.props.date}'s data recieved`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
         })
             .catch((err) => {
-                alert("cannot get data from db at report.js");
+                toast.warn(`error in fetching  ${this.props.date}'s data  `, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
                 return;
             });
 
@@ -43,45 +71,65 @@ class Output extends Component {
 
         let todayActivities = this.state.userActivities;
         if (todayActivities) {
-            return todayActivities.data.map((obj, key) => {
-                c++
 
+            if (todayActivities.data.length === 0)
                 return (
                     <tbody>
                         <tr>
-                            <td scope="row">{c}</td>
-                            <td>{obj.title}</td>
-                            <td> {obj.start_time}</td>
-
-                            {obj.end_time ? (
-                                <td>{obj.end_time}</td>
-                            )
-                                :
-                                (
-                                    <td>{"no end time"}</td>
-                                )}
-                            {obj.end_time ? (
-                                <td>{Math.abs(moment(obj.end_time, 'HH:mm:ss').diff(moment(obj.start_time, 'HH:mm:ss')) / 3600000)}</td>
-                            )
-                                :
-                                (
-                                    <td>{"not a time"}</td>
-                                )}
+                            <td colSpan="5" style={{ textAlign: "center" }}>
+                                <h1>No activities found on this date </h1>
+                            </td>
                         </tr>
                     </tbody>
                 )
-            })
+            return (
+
+                // <RSC>
+                    // {
+                    todayActivities.data.map((obj, key) => {
+                        c++;
+
+                        return (
+                            <tbody>
+                                <tr>
+                                    <td style={{ textAlign: "center" }}>{c}</td>
+                                    <td style={{ textAlign: "center" }}>{obj.title}</td>
+                                    <td style={{ textAlign: "center" }}> {obj.start_time}</td>
+
+                                    {obj.end_time ? (
+                                        <td style={{ textAlign: "center" }}>{obj.end_time}</td>
+                                    )
+                                        :
+                                        (
+                                            <td style={{ textAlign: "center" }}>{"no end time"}</td>
+                                        )}
+                                    {obj.end_time ? (
+                                        <td style={{ textAlign: "center" }}>{Math.abs(moment(obj.end_time, 'HH:mm:ss').diff(moment(obj.start_time, 'HH:mm:ss')) / 3600000)}</td>
+                                    )
+                                        :
+                                        (
+                                            <td style={{ textAlign: "center" }}>{"not a time"}</td>
+                                        )}
+                                </tr>
+                            </tbody>
+                        )
+                    })
+                // }
+                // {/* </RSC> */}
+                )
         }
-        else
+        else {
             return (
                 <tbody>
                     <tr>
                         <td colSpan="5" >
-                            <h1>No activities found on this date </h1>
+                            <h1>No activities found </h1>
                         </td>
                     </tr>
                 </tbody>
             )
+        }
+
     }
 }
 export default Output;
